@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FC HUB — Всё в одном (by Step4k)</title>
+    <title>FC HUB v2 — EA FC 26 Career Companion</title>
     <!-- Telegram Mini App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- Tailwind CSS -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -14,2070 +18,385 @@
             theme: {
                 extend: {
                     colors: {
-                        obsidian: {
-                            900: '#07090e',
-                            800: '#0d111a',
-                            700: '#151b28',
-                            600: '#1e2638',
-                            500: '#2a354d'
-                        },
-                        eagreen: '#00ff87',
-                        eacyan: '#00e5ff',
-                        eaamber: '#ffb700',
-                        eaviolet: '#9d4edd',
-                        eacrimson: '#ff0055'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
+                        accent: '#00e87b',
+                        surface: '#0f141e',
+                        elevated: '#161d2b'
                     }
                 }
             }
         }
     </script>
-    <!-- FontAwesome icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Custom scrollbar & pitch styling */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0d111a; }
-        ::-webkit-scrollbar-thumb { background: #2a354d; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #00ff87; }
-        
-        .pitch-bg {
-            background-color: #0b1d13;
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(0, 255, 135, 0.08) 0%, transparent 70%),
-                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 100% 100%, 20px 20px, 20px 20px;
-        }
-
-        .pitch-lines {
-            pointer-events: none;
-        }
-
-        .tab-active-tactics { border-color: #00ff87; color: #00ff87; background: rgba(0, 255, 135, 0.08); }
-        .tab-active-transfers { border-color: #00e5ff; color: #00e5ff; background: rgba(0, 229, 255, 0.08); }
-        .tab-active-squad { border-color: #ffb700; color: #ffb700; background: rgba(255, 183, 0, 0.08); }
-        .tab-active-sbc { border-color: #f59e0b; color: #f59e0b; background: rgba(245, 158, 11, 0.08); }
-        .tab-active-duel { border-color: #ff0055; color: #ff0055; background: rgba(255, 0, 85, 0.08); }
-        .tab-active-challenges { border-color: #9d4edd; color: #9d4edd; background: rgba(157, 78, 221, 0.08); }
-        .tab-active-skills { border-color: #ff7b00; color: #ff7b00; background: rgba(255, 123, 0, 0.08); }
-        .tab-active-training { border-color: #10b981; color: #10b981; background: rgba(16, 185, 129, 0.08); }
-        .tab-active-ai { border-color: #d946ef; color: #d946ef; background: rgba(217, 70, 239, 0.08); }
-
-        .glass-panel {
-            background: rgba(13, 17, 26, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-        }
-
-        .pulse-neon {
-            box-shadow: 0 0 15px rgba(0, 255, 135, 0.4);
-        }
-
-        @keyframes scanline {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(1000%); }
-        }
-        .scan-effect {
-            animation: scanline 2.5s linear infinite;
-        }
-    </style>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-obsidian-900 text-gray-100 font-sans min-h-screen flex flex-col antialiased selection:bg-eagreen selection:text-black">
+<body class="pb-24 md:pb-10">
 
-    <!-- HEADER & TOOLBAR -->
-    <header class="sticky top-0 z-50 glass-panel border-b border-obsidian-600 px-3 py-2.5 sm:px-6">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
-            
-            <!-- Logo & Creator -->
-            <div class="flex items-center justify-between w-full md:w-auto">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-eagreen to-eacyan flex items-center justify-center text-black font-black text-xl shadow-lg shadow-eagreen/20">
-                        FC
-                    </div>
-                    <div>
-                        <h1 class="font-extrabold text-lg leading-tight tracking-wide bg-gradient-to-r from-white via-gray-200 to-eagreen bg-clip-text text-transparent">
-                            FC HUB <span class="text-xs font-normal text-eagreen px-1.5 py-0.5 rounded bg-eagreen/10 border border-eagreen/30">v27.5</span>
-                        </h1>
-                        <p class="text-xs text-gray-400 flex items-center gap-1.5">
-                            <span>Всё в одном</span>
-                            <span class="text-gray-600">•</span>
-                            <span class="text-eagreen font-medium">by Step4k</span>
-                        </p>
-                    </div>
+    <!-- LOADING OVERLAY -->
+    <div id="appLoader" class="fixed inset-0 z-[150] bg-[#080b11] flex flex-col items-center justify-center gap-4 px-6 text-center">
+        <div class="loader-ring"></div>
+        <div>
+            <div class="font-display text-lg font-extrabold tracking-tight text-white">FC HUB <span class="text-[#00e87b]">26</span></div>
+            <p id="loaderStatus" class="text-xs text-slate-400 mt-1">Загружаем полную базу EA FC 26 (18 000+ игроков)...</p>
+        </div>
+    </div>
+
+    <!-- TOASTS -->
+    <div id="toastContainer"></div>
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 glass-header px-3 sm:px-6 py-2.5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-[#00e87b] text-[#04120a] font-display font-extrabold text-sm flex items-center justify-center shadow-lg shadow-[#00e87b]/20">
+                    FC
                 </div>
-
-                <!-- Shortlist Badge indicator for Mobile -->
-                <button onclick="switchTab('transfers'); filterShortlistOnly()" class="md:hidden flex items-center gap-1.5 bg-obsidian-700 hover:bg-obsidian-600 px-2.5 py-1.5 rounded-lg border border-amber-500/30 text-amber-400 text-xs font-semibold">
-                    <i class="fa-solid fa-star"></i>
-                    <span id="mobileShortlistCount">0</span>
-                </button>
+                <div>
+                    <div class="font-display text-sm sm:text-base font-extrabold leading-none text-white flex items-center gap-1.5">
+                        FC HUB <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#00e87b]/15 text-[#00e87b]">FC 26</span>
+                    </div>
+                    <div id="dbMetaBadge" class="text-[11px] text-slate-400 mt-0.5">База загружается...</div>
+                </div>
             </div>
 
-            <!-- Global Selectors: Version Engine & Career Mode -->
-            <div class="flex items-center justify-between md:justify-end gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
-                
-                <!-- EA Version Switcher -->
-                <div class="flex items-center bg-obsidian-800 p-1 rounded-xl border border-obsidian-600 text-xs">
-                    <span class="text-gray-400 px-2 hidden lg:inline font-semibold">Версия:</span>
-                    <div class="flex gap-1" id="versionSelectorBtns">
-                        <button onclick="setGameVersion('fc27')" data-ver="fc27" class="ver-btn px-2.5 py-1.5 rounded-lg font-bold transition-all bg-eagreen text-black shadow-md">EA FC 27</button>
-                        <button onclick="setGameVersion('fc26')" data-ver="fc26" class="ver-btn px-2.5 py-1.5 rounded-lg font-bold transition-all text-gray-300 hover:text-white hover:bg-obsidian-700">EA FC 26</button>
-                        <button onclick="setGameVersion('fc25')" data-ver="fc25" class="ver-btn px-2.5 py-1.5 rounded-lg font-bold transition-all text-gray-300 hover:text-white hover:bg-obsidian-700">EA FC 25</button>
-                        <button onclick="setGameVersion('fifa23')" data-ver="fifa23" class="ver-btn px-2.5 py-1.5 rounded-lg font-bold transition-all text-gray-300 hover:text-white hover:bg-obsidian-700">FIFA 23</button>
-                        <button onclick="setGameVersion('fcmobile')" data-ver="fcmobile" class="ver-btn px-2 py-1.5 rounded-lg font-bold transition-all text-amber-400 hover:bg-amber-400/10">FC Mobile</button>
-                    </div>
-                </div>
-
-                <!-- Mode Switcher -->
-                <div class="flex items-center bg-obsidian-800 p-1 rounded-xl border border-obsidian-600 text-xs">
-                    <select id="careerModeSelect" onchange="setCareerMode(this.value)" class="bg-transparent text-gray-200 font-medium px-2 py-1 focus:outline-none cursor-pointer">
-                        <option value="manager" class="bg-obsidian-800 text-white">🎮 Карьера тренера</option>
-                        <option value="player" class="bg-obsidian-800 text-white">⚽ Карьера игрока</option>
-                        <option value="ut" class="bg-obsidian-800 text-white">⚡ Ultimate Team</option>
-                    </select>
-                </div>
-
-                <!-- Desktop Shortlist Button -->
-                <button onclick="switchTab('transfers'); filterShortlistOnly()" class="hidden md:flex items-center gap-1.5 bg-obsidian-800 hover:bg-amber-500/10 border border-amber-500/40 text-amber-400 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all">
-                    <i class="fa-solid fa-star"></i>
-                    <span>Избранное</span>
-                    <span id="desktopShortlistCount" class="bg-amber-500/20 px-1.5 py-0.5 rounded text-[10px]">0</span>
+            <!-- Mode Switcher: Manager vs Player Career -->
+            <div class="mode-pill">
+                <button id="modeBtnManager" class="active" onclick="App.setMode('manager')">
+                    <i class="fa-solid fa-clipboard-user mr-1"></i>Тренер
+                </button>
+                <button id="modeBtnPlayer" onclick="App.setMode('player')">
+                    <i class="fa-solid fa-futbol mr-1"></i>Игрок
                 </button>
             </div>
         </div>
 
-        <!-- Dynamic Info Banner -->
-        <div id="versionBanner" class="max-w-7xl mx-auto mt-2 text-[11px] px-3 py-1 bg-obsidian-800/80 rounded-lg border border-obsidian-600 flex items-center justify-between text-gray-300">
+        <!-- Desktop Navigation Bar -->
+        <nav class="hidden md:flex max-w-7xl mx-auto mt-2.5 pt-2 border-t border-white/5 items-center justify-between">
+            <div id="desktopNavTabs" class="flex items-center gap-1.5"></div>
             <div class="flex items-center gap-2">
-                <i class="fa-solid fa-circle-info text-eagreen"></i>
-                <span id="versionBannerText">Активный движок: <b>EA SPORTS FC 27</b>. Все рейтинги, возраста, клубы и стоимости актуализированы!</span>
+                <button onclick="App.exportSave()" class="btn-secondary !py-1.5 !px-3 !text-xs" title="Экспорт сохранения">
+                    <i class="fa-solid fa-download"></i> Бэкап
+                </button>
+                <label class="btn-secondary !py-1.5 !px-3 !text-xs cursor-pointer" title="Импорт сохранения">
+                    <i class="fa-solid fa-upload"></i> Импорт
+                    <input type="file" accept=".json" class="hidden" onchange="App.importSave(event)">
+                </label>
             </div>
-            <span class="text-gray-400 font-mono hidden sm:inline" id="activeModeBadge">Режим: Карьера тренера</span>
-        </div>
+        </nav>
     </header>
 
-    <!-- NAVIGATION TABS -->
-    <nav class="bg-obsidian-800/90 border-b border-obsidian-700 px-2 sm:px-6 overflow-x-auto scrollbar-none sticky top-[82px] md:top-[68px] z-40">
-        <div class="max-w-7xl mx-auto flex items-center gap-1 min-w-max py-1.5">
-            <button onclick="switchTab('tactics')" id="tab-btn-tactics" class="nav-tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-transparent tab-active-tactics">
-                <i class="fa-solid fa-sliders text-sm"></i> Тактики и Мета
-            </button>
-            <button onclick="switchTab('transfers')" id="tab-btn-transfers" class="nav-tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-transparent text-gray-400 hover:text-white hover:bg-obsidian-700">
-                <i class="fa-solid fa-users-viewfinder text-sm"></i> Трансферы (500+)
-            </button>
-            <button onclick="switchTab('squad')" id="tab-btn-squad" class="nav-tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-transparent text-gray-400 hover:text-white hover:bg-obsidian-700">
-                <i class="fa-solid fa-shield-halved text-sm"></i> Squad Builder
-            </button>
-            <button onclick="switchTab('sbc')" id="tab-btn-sbc" class="nav-tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-transparent text-gray-400 hover:text-white hover:bg-obsidian-700">
-                <i class="fa-solid fa-calculator text-sm"></i> ИПК Калькулятор
-            </button>
-            <button onclick="switchTab('duel')" id="tab-btn-duel" class="nav-tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-transparent text-gray-400 hover:text-white hover:bg-obsidian-700">
-                <i class="fa-solid fa-swords text-sm"></i> Дуэль 1v1
-            </button>
-            <button onclick="switchTab('challenges')" id="tab-btn-challenges" class="nav-tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-transparent text-gray-400 hover:text-white hover:bg-obsidian-700">
-                <i class="fa-solid fa-dice text-sm"></i> Челленджи
-            </button>
-            <button onclick="switchTab('skills')" id="tab-btn-skills" class="nav-tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-transparent text-gray-400 hover:text-white hover:bg-obsidian-700">
-                <i class="fa-solid fa-gamepad text-sm"></i> Финты (24+)
-            </button>
-            <button onclick="switchTab('training')" id="tab-btn-training" class="nav-tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-transparent text-gray-400 hover:text-white hover:bg-obsidian-700">
-                <i class="fa-solid fa-dumbbell text-sm"></i> Тренировки
-            </button>
-            <button onclick="switchTab('ai')" id="tab-btn-ai" class="nav-tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-transparent text-gray-400 hover:text-white hover:bg-obsidian-700">
-                <i class="fa-solid fa-wand-magic-sparkles text-sm"></i> AI-Сканер
-            </button>
-        </div>
-    </nav>
+    <!-- MAIN CONTENT -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 pt-4 space-y-5">
 
-    <!-- MAIN CONTENT CONTAINER -->
-    <main class="flex-grow max-w-7xl w-full mx-auto p-3 sm:p-6 space-y-6">
-
-        <!-- ==================== TAB 1: TACTICS & META ==================== -->
-        <section id="tab-tactics" class="tab-content space-y-6">
-            <!-- Header Banner -->
-            <div class="glass-panel p-4 sm:p-6 rounded-2xl border-l-4 border-eagreen flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h2 class="text-xl font-extrabold flex items-center gap-2 text-white">
-                        <i class="fa-solid fa-sliders text-eagreen"></i> Тактика & FC IQ Роли Мета
-                    </h2>
-                    <p class="text-xs text-gray-400 mt-1">Интерактивная доска схем, пресеты киберспортсменов и точные копируемые коды тактик.</p>
-                </div>
-                <div class="flex items-center gap-2 w-full md:w-auto">
-                    <select id="tacticPresetSelect" onchange="loadTacticPreset(this.value)" class="w-full md:w-auto bg-obsidian-700 border border-eagreen/40 text-eagreen font-bold text-xs rounded-xl px-3 py-2 focus:outline-none">
-                        <option value="4231_meta">🔥 4-2-3-1 Мета Киберспорт (Контроль)</option>
-                        <option value="433_holding">⚡ 4-3-3 (4) Атака & Вингеры</option>
-                        <option value="442_classic">🛡️ 4-4-2 Классика & Прессинг</option>
-                        <option value="352_ultra">🚀 3-5-2 Ультра-Атака</option>
-                        <option value="5212_counter">🏰 5-2-1-2 Железобетон Контр-атака</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Pitch Stage & Controls Split -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Pitch (7 cols) -->
-                <div class="lg:col-span-7 flex flex-col items-center">
-                    <div class="w-full max-w-[480px] rounded-2xl overflow-hidden border border-emerald-500/30 shadow-2xl pitch-bg p-4 relative" style="aspect-ratio: 68/105;">
-                        <!-- SVG Pitch Field lines -->
-                        <svg class="absolute inset-0 w-full h-full stroke-emerald-500/20 fill-none" stroke-width="1.5">
-                            <rect x="5%" y="5%" width="90%" height="90%" rx="8"/>
-                            <line x1="5%" y1="50%" x2="95%" y2="50%"/>
-                            <circle cx="50%" cy="50%" r="15%"/>
-                            <circle cx="50%" cy="50%" r="1.5%" fill="rgba(0,255,135,0.4)"/>
-                            <!-- Penalty Areas -->
-                            <rect x="22%" y="5%" width="56%" height="16%"/>
-                            <rect x="34%" y="5%" width="32%" height="7%"/>
-                            <rect x="22%" y="79%" width="56%" height="16%"/>
-                            <rect x="34%" y="88%" width="32%" height="7%"/>
-                        </svg>
-
-                        <!-- Non-overlapping Dynamic Tactical Player Tokens -->
-                        <div id="tacticalPitchTokens" class="relative w-full h-full z-10">
-                            <!-- Injected via JS -->
-                        </div>
+        <!-- ================= MANAGER MODE VIEWS ================= -->
+        <div id="view-manager-club" class="app-view space-y-5">
+            <!-- Club Header & Selector -->
+            <div class="card-elevated p-4 sm:p-5">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div>
+                        <div class="text-[11px] uppercase tracking-wider text-[#00e87b] font-bold">Карьера тренера • EA FC 26</div>
+                        <h1 id="activeClubTitle" class="font-display text-xl sm:text-2xl font-extrabold text-white mt-1">Выберите клуб</h1>
+                        <p id="activeClubSub" class="text-xs sm:text-sm text-slate-400 mt-0.5">Загрузите реальный состав любой команды из 600+ клубов</p>
                     </div>
-                </div>
-
-                <!-- Tactic Details & Copy Code Panel (5 cols) -->
-                <div class="lg:col-span-5 space-y-4">
-                    <div class="glass-panel p-5 rounded-2xl space-y-4 border border-obsidian-600">
-                        <div class="flex items-center justify-between">
-                            <h3 id="currentTacticTitle" class="font-bold text-base text-eagreen">4-2-3-1 Киберспорт Мета</h3>
-                            <span id="currentTacticFormation" class="text-xs bg-obsidian-700 px-2.5 py-1 rounded-lg text-gray-300 font-mono font-bold">4-2-3-1</span>
-                        </div>
-
-                        <!-- FC IQ Roles Breakdown -->
-                        <div class="space-y-2">
-                            <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Ключевые FC IQ Роли:</h4>
-                            <div id="tacticalRolesList" class="space-y-1.5 text-xs">
-                                <!-- Dynamic Roles -->
-                            </div>
-                        </div>
-
-                        <!-- Defensive & Build-up sliders display -->
-                        <div class="grid grid-cols-2 gap-3 pt-2">
-                            <div class="bg-obsidian-800 p-3 rounded-xl border border-obsidian-600">
-                                <span class="text-[10px] text-gray-400 block">Построение атак:</span>
-                                <span id="tacticBuildUp" class="font-bold text-sm text-white">Короткий пас</span>
-                            </div>
-                            <div class="bg-obsidian-800 p-3 rounded-xl border border-obsidian-600">
-                                <span class="text-[10px] text-gray-400 block">Защитный стиль:</span>
-                                <span id="tacticDefensive" class="font-bold text-sm text-white">Высокий прессинг (70)</span>
-                            </div>
-                        </div>
-
-                        <!-- Copy Tactic Code -->
-                        <div class="pt-2">
-                            <label class="text-[11px] text-gray-400 block mb-1">Код тактики для EA FC (нажмите скопировать):</label>
-                            <div class="flex items-center gap-2">
-                                <input type="text" id="tacticCodeInput" readonly value="eafc-4231-meta-2027" class="w-full bg-obsidian-800 border border-obsidian-600 rounded-xl px-3 py-2 text-xs font-mono text-eagreen font-bold focus:outline-none">
-                                <button onclick="copyTacticCode()" class="bg-eagreen hover:bg-emerald-400 text-black px-4 py-2 rounded-xl text-xs font-extrabold transition-all flex items-center gap-1.5 whitespace-nowrap">
-                                    <i class="fa-solid fa-copy"></i> Копия
-                                </button>
-                            </div>
-                            <span id="copyFeedback" class="text-[10px] text-eagreen mt-1 hidden block">✓ Код тактики скопирован в буфер обмена!</span>
-                        </div>
-                    </div>
-
-                    <!-- Pro Tip Box -->
-                    <div class="glass-panel p-4 rounded-2xl border border-eagreen/20 bg-eagreen/5">
-                        <div class="flex items-start gap-3">
-                            <i class="fa-solid fa-lightbulb text-eagreen text-lg mt-0.5"></i>
-                            <div class="text-xs text-gray-300 space-y-1">
-                                <span class="font-bold text-white block">Совет от киберспортсменов:</span>
-                                <p id="tacticProTip">В EA FC 27 роль "Inside Forward+" для крайних хавов создает максимальную перегрузку флангов в фазе перехода.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ==================== TAB 2: TRANSFERS (500+) & HISTORICAL ENGINE ==================== -->
-        <section id="tab-transfers" class="tab-content space-y-6 hidden">
-            
-            <!-- Filters Bar -->
-            <div class="glass-panel p-4 rounded-2xl border border-eacyan/30 space-y-3">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-3">
-                    <!-- Search Input -->
-                    <div class="relative w-full md:w-80">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-gray-400 text-xs"></i>
-                        <input type="text" id="transferSearchInput" oninput="renderTransfers()" placeholder="Поиск игрока, клуба, нации..." class="w-full bg-obsidian-800 border border-obsidian-600 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-eacyan">
-                    </div>
-
-                    <!-- Position Filter -->
-                    <div class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0">
-                        <button onclick="setPosFilter('ALL')" data-pos="ALL" class="pos-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-eacyan text-black">ВСЕ</button>
-                        <button onclick="setPosFilter('ATT')" data-pos="ATT" class="pos-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:bg-obsidian-700">НАП</button>
-                        <button onclick="setPosFilter('MID')" data-pos="MID" class="pos-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:bg-obsidian-700">ПЗ</button>
-                        <button onclick="setPosFilter('DEF')" data-pos="DEF" class="pos-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:bg-obsidian-700">ЗАЩ</button>
-                        <button onclick="setPosFilter('GK')" data-pos="GK" class="pos-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:bg-obsidian-700">ВР</button>
-                    </div>
-
-                    <!-- Special Category Filters & Sort -->
-                    <div class="flex items-center gap-2 w-full md:w-auto justify-between md:justify-end">
-                        <select id="catFilterSelect" onchange="renderTransfers()" class="bg-obsidian-800 border border-obsidian-600 text-xs text-gray-200 rounded-xl px-2.5 py-2 focus:outline-none">
-                            <option value="ALL">Все категории</option>
-                            <option value="wonderkid">🌟 Вундеркинды (POT 88+)</option>
-                            <option value="gem">💎 Скрытые самородки</option>
-                            <option value="star">⭐ Звезды</option>
-                            <option value="icon">🏆 Иконы / Герои</option>
-                        </select>
-
-                        <select id="sortTransfersSelect" onchange="renderTransfers()" class="bg-obsidian-800 border border-obsidian-600 text-xs text-eacyan font-bold rounded-xl px-2.5 py-2 focus:outline-none">
-                            <option value="ovr_desc">Сортировка: OVR ↓</option>
-                            <option value="pot_desc">Сортировка: POT ↓</option>
-                            <option value="growth_desc">Рост (+POT) ↓</option>
-                            <option value="age_asc">Возраст ↑</option>
-                            <option value="price_asc">Цена ↑</option>
-                            <option value="name_asc">Имя А-Я</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Players Table Grid -->
-            <div class="glass-panel rounded-2xl border border-obsidian-600 overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-obsidian-800 text-gray-400 uppercase font-semibold border-b border-obsidian-600">
-                            <tr>
-                                <th class="p-3">Игрок</th>
-                                <th class="p-3">Поз</th>
-                                <th class="p-3 text-center">OVR</th>
-                                <th class="p-3 text-center">POT</th>
-                                <th class="p-3 text-center">Рост</th>
-                                <th class="p-3 text-center">Возраст</th>
-                                <th class="p-3">Клуб</th>
-                                <th class="p-3 text-right">Стоимость</th>
-                                <th class="p-3 text-center">Действие</th>
-                            </tr>
-                        </thead>
-                        <tbody id="transfersTableBody" class="divide-y divide-obsidian-700/50">
-                            <!-- Injected dynamically via JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination Footer -->
-                <div class="p-3 bg-obsidian-800/80 border-t border-obsidian-600 flex items-center justify-between text-xs text-gray-400">
-                    <span id="transfersCountInfo">Показано 1-15 из 500 игроков</span>
-                    <div class="flex items-center gap-1.5" id="paginationControls">
-                        <!-- Injected JS -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ==================== TAB 3: SQUAD BUILDER ==================== -->
-        <section id="tab-squad" class="tab-content space-y-6 hidden">
-            <!-- Header Controls -->
-            <div class="glass-panel p-4 rounded-2xl border-l-4 border-eaamber flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                <div>
-                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-shield-halved text-eaamber"></i> Squad Builder & Состав
-                    </h2>
-                    <p class="text-xs text-gray-400 mt-0.5">Соберите команду мечты с учетом рейтингов выбранной версии EA FC.</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <select id="squadFormationSelect" onchange="changeSquadFormation(this.value)" class="bg-obsidian-800 border border-eaamber/50 text-eaamber font-bold text-xs rounded-xl px-3 py-2 focus:outline-none">
-                        <option value="433">Схема: 4-3-3</option>
-                        <option value="4231">Схема: 4-2-3-1</option>
-                        <option value="442">Схема: 4-4-2</option>
-                        <option value="352">Схема: 3-5-2</option>
-                    </select>
-                    <button onclick="clearSquad()" class="bg-obsidian-700 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-2 rounded-xl text-xs font-bold transition-all">
-                        Очистить
-                    </button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Squad Pitch Stage (8 cols) -->
-                <div class="lg:col-span-8 flex flex-col items-center">
-                    <div class="w-full max-w-[520px] rounded-2xl overflow-hidden border border-amber-500/30 shadow-2xl pitch-bg p-4 relative" style="aspect-ratio: 68/100;">
-                        <!-- SVG pitch -->
-                        <svg class="absolute inset-0 w-full h-full stroke-emerald-500/20 fill-none" stroke-width="1.5">
-                            <rect x="4%" y="4%" width="92%" height="92%" rx="8"/>
-                            <line x1="4%" y1="50%" x2="96%" y2="50%"/>
-                            <circle cx="50%" cy="50%" r="16%"/>
-                            <rect x="20%" y="4%" width="60%" height="16%"/>
-                            <rect x="20%" y="80%" width="60%" height="16%"/>
-                        </svg>
-
-                        <!-- Squad Pitch Slots -->
-                        <div id="squadPitchSlots" class="relative w-full h-full z-10">
-                            <!-- Injected JS -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Squad Stats Summary (4 cols) -->
-                <div class="lg:col-span-4 space-y-4">
-                    <div class="glass-panel p-5 rounded-2xl border border-obsidian-600 space-y-4">
-                        <h3 class="font-extrabold text-sm text-eaamber uppercase tracking-wider">Анализ состава</h3>
-                        
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-center bg-obsidian-800 p-3 rounded-xl border border-obsidian-600">
-                                <span class="text-xs text-gray-400">Средний OVR:</span>
-                                <span id="squadAvgOvr" class="font-extrabold text-lg text-eaamber">0</span>
-                            </div>
-                            <div class="flex justify-between items-center bg-obsidian-800 p-3 rounded-xl border border-obsidian-600">
-                                <span class="text-xs text-gray-400">Средний возраст:</span>
-                                <span id="squadAvgAge" class="font-extrabold text-base text-white">0.0 лет</span>
-                            </div>
-                            <div class="flex justify-between items-center bg-obsidian-800 p-3 rounded-xl border border-obsidian-600">
-                                <span class="text-xs text-gray-400">Общая стоимость:</span>
-                                <span id="squadTotalValue" class="font-extrabold text-base text-eagreen">€0M</span>
-                            </div>
-                        </div>
-
-                        <!-- Top Rating players list in squad -->
-                        <div class="space-y-2 pt-2">
-                            <span class="text-xs font-semibold text-gray-400 block">Лидеры состава:</span>
-                            <div id="squadTopPlayersList" class="space-y-1.5 text-xs">
-                                <span class="text-gray-500 italic">Нажмите на любой слот на поле, чтобы добавить игрока.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ==================== TAB 4: SBC CALCULATOR ==================== -->
-        <section id="tab-sbc" class="tab-content space-y-6 hidden">
-            <div class="glass-panel p-5 rounded-2xl border-l-4 border-yellow-500 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-calculator text-yellow-500"></i> Калькулятор ИПК (SBC Solver)
-                    </h2>
-                    <p class="text-xs text-gray-400 mt-1">Рассчитайте самую дешевую комбинацию рейтингов (Fodder) для сборки челенджей ИПК.</p>
-                </div>
-                <div class="flex items-center gap-3 bg-obsidian-800 p-2 rounded-xl border border-obsidian-600">
-                    <span class="text-xs font-bold text-gray-300">Целевой OVR состава:</span>
-                    <select id="sbcTargetRatingSelect" onchange="calculateSBC()" class="bg-obsidian-700 text-yellow-400 font-extrabold text-sm px-3 py-1.5 rounded-lg focus:outline-none border border-yellow-500/30">
-                        <option value="83">83 OVR</option>
-                        <option value="84">84 OVR</option>
-                        <option value="85" selected>85 OVR</option>
-                        <option value="86">86 OVR</option>
-                        <option value="87">87 OVR</option>
-                        <option value="88">88 OVR</option>
-                        <option value="89">89 OVR</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Recommended Fodder Combo -->
-                <div class="glass-panel p-5 rounded-2xl border border-obsidian-600 space-y-4">
-                    <h3 class="font-bold text-sm text-yellow-400 flex items-center gap-2">
-                        <i class="fa-solid fa-lightbulb"></i> Оптимальная комбинация филлеров
-                    </h3>
-                    
-                    <div id="sbcCombinationResult" class="space-y-2">
-                        <!-- JS generated list of needed ratings e.g., 2x 87, 3x 85, 6x 84 -->
-                    </div>
-
-                    <div class="bg-obsidian-800 p-4 rounded-xl border border-yellow-500/30 flex justify-between items-center mt-4">
-                        <div>
-                            <span class="text-xs text-gray-400 block">Ориентировочная стоимость:</span>
-                            <span id="sbcEstimatedCost" class="text-xl font-extrabold text-eagreen">~45,000 монет</span>
-                        </div>
-                        <span class="text-[10px] bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded border border-yellow-500/40">Самый экономичный вариант</span>
-                    </div>
-                </div>
-
-                <!-- Custom Player Rating Calculator -->
-                <div class="glass-panel p-5 rounded-2xl border border-obsidian-600 space-y-4">
-                    <h3 class="font-bold text-sm text-white flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-yellow-500"></i> Ваша 11-ка (Симуляция)
-                    </h3>
-                    <p class="text-xs text-gray-400">Введите имеющиеся у вас рейтинги карточек в клубе:</p>
-                    
-                    <div id="sbcInputsGrid" class="grid grid-cols-4 sm:grid-cols-6 gap-2 text-xs">
-                        <!-- 11 inputs generated by JS -->
-                    </div>
-
-                    <div class="pt-2 flex items-center justify-between">
-                        <button onclick="calcCustomSBC()" class="bg-yellow-500 hover:bg-yellow-400 text-black px-4 py-2 rounded-xl font-bold text-xs transition-all">
-                            Рассчитать итог
+                    <div class="flex flex-wrap items-center gap-2">
+                        <select id="leagueFilterSelect" onchange="Manager.onLeagueSelectChange()" class="input-field text-xs sm:text-sm min-w-[160px]"></select>
+                        <select id="clubSelect" onchange="Manager.selectClub(this.value)" class="input-field text-xs sm:text-sm min-w-[180px]"></select>
+                        <button onclick="Manager.openBudgetModal()" class="btn-secondary !text-xs">
+                            <i class="fa-solid fa-wallet text-[#00e87b]"></i>
+                            <span id="clubBudgetDisplay">€15.0M</span>
                         </button>
-                        <span id="customSbcResultOvr" class="text-xs font-bold text-gray-300">Итоговый OVR: <b class="text-yellow-400 text-sm">--</b></span>
+                    </div>
+                </div>
+
+                <!-- Quick KPI Strip -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-4">
+                    <div class="bg-[#080b11]/70 border border-white/5 rounded-xl p-3">
+                        <div class="text-[11px] text-slate-400">Средний OVR (Старт)</div>
+                        <div id="kpiAvgOvr" class="font-mono text-xl font-bold text-[#00e87b] mt-0.5">—</div>
+                    </div>
+                    <div class="bg-[#080b11]/70 border border-white/5 rounded-xl p-3">
+                        <div class="text-[11px] text-slate-400">Средний возраст</div>
+                        <div id="kpiAvgAge" class="font-mono text-xl font-bold text-white mt-0.5">—</div>
+                    </div>
+                    <div class="bg-[#080b11]/70 border border-white/5 rounded-xl p-3">
+                        <div class="text-[11px] text-slate-400">Стоимость состава</div>
+                        <div id="kpiSquadValue" class="font-mono text-xl font-bold text-sky-400 mt-0.5">—</div>
+                    </div>
+                    <div class="bg-[#080b11]/70 border border-white/5 rounded-xl p-3">
+                        <div class="text-[11px] text-slate-400">Игроков / Истекает</div>
+                        <div id="kpiSquadCount" class="font-mono text-xl font-bold text-amber-400 mt-0.5">—</div>
                     </div>
                 </div>
             </div>
-        </section>
 
+            <!-- Pitch + Tactics & Analysis -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                <!-- Interactive Pitch (7 cols) -->
+                <div class="lg:col-span-7 card p-4 space-y-3">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-chess-board text-[#00e87b]"></i>
+                            <h2 class="font-bold text-sm sm:text-base">Схема и стартовый состав</h2>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <select id="formationSelect" onchange="Manager.setFormation(this.value)" class="input-field !py-1.5 !text-xs font-mono font-bold"></select>
+                            <button onclick="Manager.autoPickBestXI()" class="btn-secondary !py-1.5 !px-2.5 !text-xs" title="Авто-подбор сильнейшего состава">
+                                <i class="fa-solid fa-wand-magic-sparkles text-[#00e87b]"></i> Авто XI
+                            </button>
+                        </div>
+                    </div>
 
-        <!-- ==================== TAB 5: 1v1 DUEL ==================== -->
-        <section id="tab-duel" class="tab-content space-y-6 hidden">
-            <div class="glass-panel p-5 rounded-2xl border-l-4 border-eacrimson flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                <div>
-                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-swords text-eacrimson"></i> Дуэль 1v1 — Сравнение игроков
-                    </h2>
-                    <p class="text-xs text-gray-400 mt-0.5">Выберите двух футболистов для прямого сравнения параметров в выбранной версии игры.</p>
+                    <div id="managerPitch" class="pitch-container mx-auto">
+                        <!-- SVG Pitch Markings -->
+                        <svg viewBox="0 0 300 400" class="w-full h-full opacity-25 pointer-events-none" preserveAspectRatio="none">
+                            <rect x="10" y="10" width="280" height="380" fill="none" stroke="#fff" stroke-width="1.5"/>
+                            <line x1="10" y1="200" x2="290" y2="200" stroke="#fff" stroke-width="1.5"/>
+                            <circle cx="150" cy="200" r="36" fill="none" stroke="#fff" stroke-width="1.5"/>
+                            <circle cx="150" cy="200" r="2.5" fill="#fff"/>
+                            <rect x="75" y="10" width="150" height="58" fill="none" stroke="#fff" stroke-width="1.5"/>
+                            <rect x="112" y="10" width="76" height="22" fill="none" stroke="#fff" stroke-width="1.5"/>
+                            <rect x="75" y="332" width="150" height="58" fill="none" stroke="#fff" stroke-width="1.5"/>
+                            <rect x="112" y="368" width="76" height="22" fill="none" stroke="#fff" stroke-width="1.5"/>
+                        </svg>
+                        <div id="pitchTokensLayer" class="absolute inset-0"></div>
+                    </div>
+                    <p class="text-[11px] text-slate-400 text-center">Нажми на любого игрока на поле, чтобы посмотреть профиль, заменить или найти трансферную замену.</p>
+                </div>
+
+                <!-- Right Panel: Analysis & Bench (5 cols) -->
+                <div class="lg:col-span-5 space-y-4">
+                    <!-- Smart Analysis Card -->
+                    <div class="card p-4 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-microscope text-[#00e87b]"></i> Анализ состава и FC IQ
+                            </h3>
+                            <span id="bestFormationBadge" class="text-[11px] font-mono px-2 py-0.5 rounded bg-[#00e87b]/15 text-[#00e87b]">—</span>
+                        </div>
+                        <div id="lineRatingsBars" class="space-y-2 text-xs"></div>
+                        <div id="squadInsightsList" class="space-y-2 pt-2 border-t border-white/5 text-xs"></div>
+                    </div>
+
+                    <!-- Squad Roster (Bench & Reserves) -->
+                    <div class="card p-4 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-users text-sky-400"></i> Весь состав клуба
+                            </h3>
+                            <span id="rosterCountLabel" class="text-xs text-slate-400 font-mono">0</span>
+                        </div>
+                        <div id="clubRosterList" class="space-y-1.5 max-h-[300px] overflow-y-auto pr-1"></div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Players Selection Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Player 1 Selector & Card -->
-                <div class="glass-panel p-5 rounded-2xl border border-red-500/30 space-y-4">
-                    <label class="text-xs font-bold text-red-400 block uppercase tracking-wider">Игрок #1 (Синий угол):</label>
-                    <select id="duelP1Select" onchange="renderDuel()" class="w-full bg-obsidian-800 border border-obsidian-600 text-xs text-white rounded-xl p-2.5 focus:outline-none focus:border-red-500">
-                        <!-- Injected JS -->
+        <!-- VIEW: SCOUT / TRANSFERS (18,000+ PLAYERS) -->
+        <div id="view-manager-scout" class="app-view hidden space-y-4">
+            <div class="card-elevated p-4 space-y-3">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <h2 class="font-display text-lg font-extrabold text-white">Глобальный скаут FC 26</h2>
+                        <p class="text-xs text-slate-400">Поиск по всем 18 000+ игрокам с точными OVR, POT, ценами и PlayStyles</p>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5">
+                        <button onclick="Manager.applyScoutPreset('wonderkids')" class="btn-secondary !py-1 !px-2.5 !text-xs">🌟 Вундеркинды U21</button>
+                        <button onclick="Manager.applyScoutPreset('championship')" class="btn-secondary !py-1 !px-2.5 !text-xs">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Под Чемпионшип</button>
+                        <button onclick="Manager.applyScoutPreset('expiring')" class="btn-secondary !py-1 !px-2.5 !text-xs">⏳ Контракт ≤2026</button>
+                        <button onclick="Manager.applyScoutPreset('shortlist')" id="btnPresetShortlist" class="btn-secondary !py-1 !px-2.5 !text-xs">⭐ Шортлист (<span id="shortlistCount">0</span>)</button>
+                        <button onclick="Manager.resetScoutFilters()" class="btn-secondary !py-1 !px-2.5 !text-xs text-rose-400">Сброс</button>
+                    </div>
+                </div>
+
+                <!-- Filters Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+                    <input type="text" id="scoutSearch" oninput="Manager.renderScout()" placeholder="Имя, клуб, PlayStyle..." class="input-field col-span-2">
+                    <select id="scoutPos" onchange="Manager.renderScout()" class="input-field">
+                        <option value="">Все позиции</option>
+                        <option value="ST">ST (Нападающий)</option>
+                        <option value="LW">LW / LM (Левый)</option>
+                        <option value="RW">RW / RM (Правый)</option>
+                        <option value="CAM">CAM (АПЗ)</option>
+                        <option value="CM">CM (ЦП)</option>
+                        <option value="CDM">CDM (Опорник)</option>
+                        <option value="LB">LB / LWB (ЛЗ)</option>
+                        <option value="RB">RB / RWB (ПЗ)</option>
+                        <option value="CB">CB (ЦЗ)</option>
+                        <option value="GK">GK (Вратарь)</option>
                     </select>
-
-                    <div id="duelP1Card" class="bg-obsidian-800/90 p-4 rounded-xl border border-obsidian-600 space-y-3">
-                        <!-- Player details injected JS -->
-                    </div>
+                    <input type="number" id="scoutMaxPrice" oninput="Manager.renderScout()" placeholder="Макс. €M (напр. 10)" class="input-field">
+                    <input type="number" id="scoutMinPot" oninput="Manager.renderScout()" placeholder="Мин. POT (напр. 82)" class="input-field">
+                    <input type="number" id="scoutMaxAge" oninput="Manager.renderScout()" placeholder="Макс. возраст" class="input-field">
                 </div>
-
-                <!-- Player 2 Selector & Card -->
-                <div class="glass-panel p-5 rounded-2xl border border-blue-500/30 space-y-4">
-                    <label class="text-xs font-bold text-blue-400 block uppercase tracking-wider">Игрок #2 (Красный угол):</label>
-                    <select id="duelP2Select" onchange="renderDuel()" class="w-full bg-obsidian-800 border border-obsidian-600 text-xs text-white rounded-xl p-2.5 focus:outline-none focus:border-blue-500">
-                        <!-- Injected JS -->
-                    </select>
-
-                    <div id="duelP2Card" class="bg-obsidian-800/90 p-4 rounded-xl border border-obsidian-600 space-y-3">
-                        <!-- Player details injected JS -->
+                <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
+                    <div id="scoutResultInfo">Найдено игроков: 0</div>
+                    <div class="flex items-center gap-2">
+                        <span>Сортировка:</span>
+                        <select id="scoutSort" onchange="Manager.renderScout()" class="input-field !py-1 !text-xs">
+                            <option value="ovr">По OVR ↓</option>
+                            <option value="pot">По Потенциалу ↓</option>
+                            <option value="growth">По Росту (POT-OVR) ↓</option>
+                            <option value="val_asc">Сначала дешевле ↑</option>
+                            <option value="pac">По Скорости (PAC) ↓</option>
+                        </select>
                     </div>
                 </div>
             </div>
 
-            <!-- Attribute Direct Comparison Bars -->
-            <div class="glass-panel p-6 rounded-2xl border border-obsidian-600 space-y-4">
-                <h3 class="font-extrabold text-center text-sm text-white uppercase tracking-wider">Сравнение ключевых характеристик</h3>
-                <div id="duelComparisonBars" class="space-y-3 max-w-2xl mx-auto text-xs">
-                    <!-- Injected JS -->
-                </div>
+            <!-- Results List -->
+            <div id="scoutResultsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
+            <div class="flex justify-center pt-2">
+                <button id="scoutLoadMoreBtn" onclick="Manager.loadMoreScout()" class="btn-secondary hidden">Показать ещё</button>
             </div>
-        </section>
+        </div>
 
-
-        <!-- ==================== TAB 6: CHALLENGES ==================== -->
-        <section id="tab-challenges" class="tab-content space-y-6 hidden">
-            <div class="glass-panel p-5 rounded-2xl border-l-4 border-eaviolet flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <!-- VIEW: DUEL 1v1 -->
+        <div id="view-manager-duel" class="app-view hidden space-y-4">
+            <div class="card-elevated p-4 sm:p-5 space-y-4">
                 <div>
-                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-dice text-eaviolet"></i> Карьерная Рулетка & Челленджи
-                    </h2>
-                    <p class="text-xs text-gray-400 mt-1">Генератор случайных реалистичных сценариев для Карьеры Тренера и Игрока.</p>
+                    <h2 class="font-display text-lg font-extrabold text-white">Сравнение 1v1</h2>
+                    <p class="text-xs text-slate-400">Сравни любых двух игроков из базы FC 26 по статам, потенциалу, цене и PlayStyles</p>
                 </div>
-                <button onclick="spinRoulette()" class="w-full md:w-auto bg-gradient-to-r from-eaviolet to-purple-600 hover:from-purple-500 hover:to-eaviolet text-white font-extrabold px-6 py-2.5 rounded-xl text-xs transition-all shadow-lg shadow-purple-500/20 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-rotate text-sm"></i> Крутить рулетку!
-                </button>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <input type="text" id="duelSearch1" oninput="Manager.searchDuelPlayer(1, this.value)" placeholder="Найти игрока 1 (напр. Bellingham)..." class="input-field w-full">
+                        <div id="duelSuggest1" class="space-y-1"></div>
+                        <div id="duelCard1" class="card p-4 bg-[#080b11]/60"></div>
+                    </div>
+                    <div class="space-y-2">
+                        <input type="text" id="duelSearch2" oninput="Manager.searchDuelPlayer(2, this.value)" placeholder="Найти игрока 2 (напр. Pedri)..." class="input-field w-full">
+                        <div id="duelSuggest2" class="space-y-1"></div>
+                        <div id="duelCard2" class="card p-4 bg-[#080b11]/60"></div>
+                    </div>
+                </div>
+                <div id="duelBarsContainer" class="space-y-3 pt-3 border-t border-white/5"></div>
             </div>
+        </div>
 
-            <!-- 3-Reel Slots Container -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Reel 1: Club / Destination -->
-                <div class="glass-panel p-5 rounded-2xl border border-purple-500/30 text-center space-y-3">
-                    <span class="text-[10px] text-purple-400 uppercase font-bold tracking-wider">Команда / Клуб</span>
-                    <div id="reelClub" class="text-lg font-black text-white min-h-[48px] flex items-center justify-center bg-obsidian-800 p-3 rounded-xl border border-obsidian-600">
-                        ⚽ Нажмите "Крутить"
+        <!-- ================= PLAYER CAREER MODE VIEWS ================= -->
+        <div id="view-player-hub" class="app-view hidden space-y-5">
+            <!-- Player Profile Banner -->
+            <div class="card-elevated p-4 sm:p-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <div class="text-[11px] uppercase tracking-wider text-sky-400 font-bold">Карьера игрока • EA FC 26</div>
+                        <h1 id="pcNameDisplay" class="font-display text-xl sm:text-2xl font-extrabold text-white mt-1">Мой Про-Игрок</h1>
+                        <p id="pcSubDisplay" class="text-xs text-slate-400 mt-0.5">ST • OVR 74 • Возраст 19 • Сезон 1</p>
                     </div>
-                </div>
-
-                <!-- Reel 2: Restriction / Condition -->
-                <div class="glass-panel p-5 rounded-2xl border border-purple-500/30 text-center space-y-3">
-                    <span class="text-[10px] text-purple-400 uppercase font-bold tracking-wider">Условие / Ограничение</span>
-                    <div id="reelCondition" class="text-sm font-bold text-eagreen min-h-[48px] flex items-center justify-center bg-obsidian-800 p-3 rounded-xl border border-obsidian-600">
-                        📜 Случайное правило
-                    </div>
-                </div>
-
-                <!-- Reel 3: Main Objective -->
-                <div class="glass-panel p-5 rounded-2xl border border-purple-500/30 text-center space-y-3">
-                    <span class="text-[10px] text-purple-400 uppercase font-bold tracking-wider">Главная Цель</span>
-                    <div id="reelGoal" class="text-sm font-bold text-eaamber min-h-[48px] flex items-center justify-center bg-obsidian-800 p-3 rounded-xl border border-obsidian-600">
-                        🏆 Цель на сезон
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pre-made Legendary Challenges Grid -->
-            <div class="glass-panel p-5 rounded-2xl border border-obsidian-600 space-y-4">
-                <h3 class="font-bold text-sm text-white">🔥 Топовые Челленджи Сообщества:</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
-                    <div class="bg-obsidian-800 p-3.5 rounded-xl border border-obsidian-600 space-y-1">
-                        <span class="font-bold text-eaviolet block">👑 Возрождение «Аякса»</span>
-                        <p class="text-gray-400 text-[11px]">Покупать только игроков возрастом до 21 года или воспитанников академии. Выиграть ЛЧ за 4 сезонов.</p>
-                    </div>
-                    <div class="bg-obsidian-800 p-3.5 rounded-xl border border-obsidian-600 space-y-1">
-                        <span class="font-bold text-eagreen block">🌍 Тотальная Баскония («Атлетик»)</span>
-                        <p class="text-gray-400 text-[11px]">Трансферы разрешены только для баскских или испанских футболистов. Без исключений.</p>
-                    </div>
-                    <div class="bg-obsidian-800 p-3.5 rounded-xl border border-obsidian-600 space-y-1">
-                        <span class="font-bold text-eaamber block">🚀 Возвращение в Элиту («Парма»)</span>
-                        <p class="text-gray-400 text-[11px]">Вернуть легендарный итальянский клуб в Серию А и завоевать Скудетто с бюджетом до €15M.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ==================== TAB 7: SKILL MOVES (24+) ==================== -->
-        <section id="tab-skills" class="tab-content space-y-6 hidden">
-            <div class="glass-panel p-5 rounded-2xl border-l-4 border-orange-500 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-gamepad text-orange-500"></i> Финты и Механики (24+)
-                    </h2>
-                    <p class="text-xs text-gray-400 mt-1">Полный гайд по комбинациям кнопок PlayStation и Xbox в EA FC 27.</p>
-                </div>
-                
-                <!-- Platform Controller Toggle -->
-                <div class="flex items-center bg-obsidian-800 p-1 rounded-xl border border-obsidian-600 text-xs">
-                    <button onclick="setPlatform('ps')" id="btnPlatformPS" class="px-3 py-1.5 rounded-lg font-bold bg-orange-500 text-black">PlayStation 5</button>
-                    <button onclick="setPlatform('xbox')" id="btnPlatformXbox" class="px-3 py-1.5 rounded-lg font-bold text-gray-400 hover:text-white">Xbox Series X</button>
-                </div>
-            </div>
-
-            <!-- Skill Filter Buttons -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
-                <button onclick="filterSkills('ALL')" data-sk="ALL" class="sk-btn px-3 py-1.5 rounded-lg font-bold bg-orange-500 text-black">Все финты (24+)</button>
-                <button onclick="filterSkills('1-2')" data-sk="1-2" class="sk-btn px-3 py-1.5 rounded-lg font-bold text-gray-400 bg-obsidian-800 hover:bg-obsidian-700">★1-★2 Финты</button>
-                <button onclick="filterSkills('3-4')" data-sk="3-4" class="sk-btn px-3 py-1.5 rounded-lg font-bold text-gray-400 bg-obsidian-800 hover:bg-obsidian-700">★3-★4 Финты</button>
-                <button onclick="filterSkills('5')" data-sk="5" class="sk-btn px-3 py-1.5 rounded-lg font-bold text-gray-400 bg-obsidian-800 hover:bg-obsidian-700">★5 Элита</button>
-            </div>
-
-            <!-- Skills List Grid -->
-            <div id="skillsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Dynamic injected skills -->
-            </div>
-        </section>
-
-
-        <!-- ==================== TAB 8: TRAINING & FITNESS ==================== -->
-        <section id="tab-training" class="tab-content space-y-6 hidden">
-            <div class="glass-panel p-5 rounded-2xl border-l-4 border-emerald-500 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-dumbbell text-emerald-500"></i> Тренировки & Тонус (Sharpness Engine)
-                    </h2>
-                    <p class="text-xs text-gray-400 mt-1">Калькулятор нагрузки, формы (Fitness) и тонуса (Sharpness) состава.</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Sharpness Calculator -->
-                <div class="glass-panel p-5 rounded-2xl border border-obsidian-600 space-y-4">
-                    <h3 class="font-bold text-sm text-emerald-400 flex items-center gap-2">
-                        <i class="fa-solid fa-calculator"></i> Интерактивный Калькулятор Тонуса
-                    </h3>
-
-                    <div class="space-y-3 text-xs">
-                        <div>
-                            <div class="flex justify-between mb-1">
-                                <span class="text-gray-400">Текущий тонус игрока (Sharpness):</span>
-                                <span id="valSharpness" class="font-bold text-emerald-400">65%</span>
-                            </div>
-                            <input type="range" id="sliderSharpness" min="0" max="100" value="65" oninput="updateTrainingCalc()" class="w-full accent-emerald-400 cursor-pointer">
-                        </div>
-
-                        <div>
-                            <div class="flex justify-between mb-1">
-                                <span class="text-gray-400">Физподготовка / Выносливость (Fitness):</span>
-                                <span id="valFitness" class="font-bold text-blue-400">80%</span>
-                            </div>
-                            <input type="range" id="sliderFitness" min="0" max="100" value="80" oninput="updateTrainingCalc()" class="w-full accent-blue-400 cursor-pointer">
-                        </div>
-
-                        <div>
-                            <span class="text-gray-400 block mb-1">План тренировки:</span>
-                            <select id="trainingPlanSelect" onchange="updateTrainingCalc()" class="w-full bg-obsidian-800 border border-obsidian-600 rounded-xl p-2 text-xs text-white focus:outline-none">
-                                <option value="balanced">⚖️ Сбалансированная нагрузка (+5% Тонус, -3% Энергия)</option>
-                                <option value="intense">🔥 Интенсивная атака (+12% Тонус, -10% Энергия)</option>
-                                <option value="recovery">🛌 Отдых и Восстановление (-4% Тонус, +15% Энергия)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Calculated Stat Boost Result -->
-                    <div class="bg-obsidian-800 p-4 rounded-xl border border-emerald-500/30 space-y-2">
-                        <span class="text-xs text-gray-400 block">Бонус к характеристикам в матче:</span>
-                        <div id="trainingBoostResult" class="font-extrabold text-base text-eagreen">
-                            +2 к OVR на поле (Тонус: 70%, Энергия: 77%)
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Training Guides -->
-                <div class="glass-panel p-5 rounded-2xl border border-obsidian-600 space-y-4 text-xs">
-                    <h3 class="font-bold text-sm text-white">📋 Правила микроциклов тренировок:</h3>
-                    <ul class="space-y-2.5 text-gray-300">
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
-                            <span><b>Перед важными дерби:</b> Ставьте «Интенсивную подготовку» за 2 дня до матча для максимизации тонуса до +10-15%.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
-                            <span><b>При плотном графике (2 игры в неделю):</b> Чередуйте только «Отдых» сразу после матча, иначе игроки получат травмы.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
-                            <span><b>Для игроков запаса:</b> Регулярно назначайте индивидуальные тренировки роли, чтобы их тонус не падал ниже 50%.</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ==================== TAB 9: AI SCANNER ==================== -->
-        <section id="tab-ai" class="tab-content space-y-6 hidden">
-            <div class="glass-panel p-5 rounded-2xl border-l-4 border-fuchsia-500 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-wand-magic-sparkles text-fuchsia-500"></i> AI-Сканер Скриншотов и Состава
-                    </h2>
-                    <p class="text-xs text-gray-400 mt-1">Загрузите скриншот состава, карточки или экрана трансферов EA FC — ИИ проанализирует и выдаст советы.</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Dropzone Area -->
-                <div class="glass-panel p-6 rounded-2xl border-2 border-dashed border-fuchsia-500/40 text-center space-y-4 flex flex-col items-center justify-center min-h-[260px] relative overflow-hidden">
-                    <input type="file" id="aiImageInput" accept="image/*" onchange="handleAiImageUpload(event)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20">
-                    
-                    <div id="aiUploadPlaceholder" class="space-y-3">
-                        <div class="w-14 h-14 rounded-2xl bg-fuchsia-500/10 border border-fuchsia-500/30 flex items-center justify-center text-fuchsia-400 text-2xl mx-auto">
-                            <i class="fa-solid fa-cloud-arrow-up"></i>
-                        </div>
-                        <div>
-                            <span class="font-bold text-sm text-white block">Нажмите или перетащите скриншот</span>
-                            <span class="text-xs text-gray-400">Поддерживаются PNG, JPG, WebP</span>
-                        </div>
-                    </div>
-
-                    <!-- Image Preview -->
-                    <img id="aiImagePreview" class="max-h-48 rounded-xl hidden z-10 border border-obsidian-600 shadow-lg">
-                    
-                    <!-- Neon Scanning Overlay Animation -->
-                    <div id="aiScanEffect" class="absolute inset-0 bg-gradient-to-b from-fuchsia-500/20 via-purple-500/10 to-transparent scan-effect hidden pointer-events-none"></div>
-                </div>
-
-                <!-- AI Response & Coach Fallback -->
-                <div class="glass-panel p-5 rounded-2xl border border-obsidian-600 space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="font-bold text-sm text-fuchsia-400 flex items-center gap-2">
-                            <i class="fa-solid fa-brain"></i> Вердикт Тренера AI
-                        </h3>
-                        <span id="aiStatusBadge" class="text-[10px] bg-obsidian-800 text-gray-400 px-2 py-0.5 rounded border border-obsidian-600">Готов к сканированию</span>
-                    </div>
-
-                    <div id="aiOutputContent" class="bg-obsidian-800 p-4 rounded-xl border border-obsidian-600 text-xs text-gray-300 min-h-[160px] space-y-2">
-                        <p class="text-gray-500 italic">Загрузите скриншот вашего состава или экрана поиска, чтобы получить моментальный анализ сильных/слабых сторон, сыгранности и трансферные рекомендации.</p>
-                    </div>
-
-                    <button onclick="triggerDemoAiAnalysis()" class="w-full bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold py-2 rounded-xl text-xs transition-all">
-                        ⚡ Тестовый анализ состава
+                    <button onclick="PlayerCareer.openProfileModal()" class="btn-primary !text-xs">
+                        <i class="fa-solid fa-pen"></i> Настроить профиль
                     </button>
                 </div>
+
+                <!-- Season Stats KPI -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-4">
+                    <div class="bg-[#080b11]/70 border border-white/5 rounded-xl p-3">
+                        <div class="text-[11px] text-slate-400">Матчи</div>
+                        <div id="pcStatMatches" class="font-mono text-xl font-bold text-white mt-0.5">0</div>
+                    </div>
+                    <div class="bg-[#080b11]/70 border border-white/5 rounded-xl p-3">
+                        <div class="text-[11px] text-slate-400">Голы / Ассисты</div>
+                        <div id="pcStatGA" class="font-mono text-xl font-bold text-[#00e87b] mt-0.5">0 / 0</div>
+                    </div>
+                    <div class="bg-[#080b11]/70 border border-white/5 rounded-xl p-3">
+                        <div class="text-[11px] text-slate-400">Средняя оценка</div>
+                        <div id="pcStatRating" class="font-mono text-xl font-bold text-amber-400 mt-0.5">0.0</div>
+                    </div>
+                    <div class="bg-[#080b11]/70 border border-white/5 rounded-xl p-3">
+                        <div class="text-[11px] text-slate-400">G+A за матч</div>
+                        <div id="pcStatRatio" class="font-mono text-xl font-bold text-sky-400 mt-0.5">0.00</div>
+                    </div>
+                </div>
             </div>
-        </section>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                <!-- Match Logger (6 cols) -->
+                <div class="lg:col-span-6 card p-4 space-y-3">
+                    <h3 class="font-bold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle text-[#00e87b]"></i> Записать матч
+                    </h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <input type="text" id="pcMatchOpp" placeholder="Соперник" class="input-field col-span-2">
+                        <input type="number" id="pcMatchGoals" placeholder="Голы" min="0" value="0" class="input-field">
+                        <input type="number" id="pcMatchAssists" placeholder="Ассисты" min="0" value="0" class="input-field">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="pcMatchRating" placeholder="Оценка (напр. 8.4)" step="0.1" min="4" max="10" value="7.8" class="input-field flex-1">
+                        <select id="pcMatchResult" class="input-field">
+                            <option value="W">Победа</option>
+                            <option value="D">Ничья</option>
+                            <option value="L">Поражение</option>
+                        </select>
+                        <button onclick="PlayerCareer.addMatch()" class="btn-primary">Добавить</button>
+                    </div>
+                    <div id="pcMatchesList" class="space-y-1.5 max-h-[260px] overflow-y-auto pt-2 border-t border-white/5"></div>
+                </div>
+
+                <!-- Career Advisor: Best Next Clubs (6 cols) -->
+                <div class="lg:col-span-6 card p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-plane-departure text-sky-400"></i> Куда перейти дальше?
+                        </h3>
+                        <button onclick="PlayerCareer.renderClubRecommendations()" class="btn-secondary !py-1 !px-2.5 !text-xs">Обновить</button>
+                    </div>
+                    <p class="text-xs text-slate-400">Реальные клубы из базы FC 26, где с твоим текущим OVR и позицией ты будешь железным игроком старта.</p>
+                    <div id="pcNextClubsList" class="space-y-2 max-h-[300px] overflow-y-auto"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: PLAYER BUILDS & CHALLENGES -->
+        <div id="view-player-builds" class="app-view hidden space-y-5">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                <!-- Meta Archetypes -->
+                <div class="card-elevated p-4 sm:p-5 space-y-3">
+                    <h2 class="font-display text-base font-extrabold text-white">Мета-билды FC 26</h2>
+                    <p class="text-xs text-slate-400">Выбери стиль игры, чтобы увидеть оптимальный рост, вес, приоритет прокачки и PlayStyles+.</p>
+                    <select id="pcBuildSelect" onchange="PlayerCareer.renderBuild(this.value)" class="input-field w-full"></select>
+                    <div id="pcBuildDetails" class="space-y-3 pt-2"></div>
+                </div>
+
+                <!-- Career Challenge Generator -->
+                <div class="card-elevated p-4 sm:p-5 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="font-display text-base font-extrabold text-white">Генератор сюжетов</h2>
+                            <p class="text-xs text-slate-400">Чтобы карьера не надоела через 2 дня</p>
+                        </div>
+                        <button onclick="PlayerCareer.rollChallenge()" class="btn-primary !text-xs">
+                            <i class="fa-solid fa-dice"></i> Крутить
+                        </button>
+                    </div>
+                    <div id="challengeCard" class="bg-[#080b11]/80 border border-white/10 rounded-2xl p-4 space-y-3">
+                        <div class="text-xs text-slate-400">Нажми «Крутить», чтобы получить уникальный сценарий для Карьеры тренера или игрока.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </main>
 
-    <!-- PLAYER DETAIL MODAL WITH VERSION RATING HISTORY TIMELINE -->
-    <div id="playerModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 hidden">
-        <div class="glass-panel w-full max-w-xl rounded-2xl border border-eagreen/40 overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-            
-            <!-- Modal Header -->
-            <div class="p-4 bg-obsidian-800 border-b border-obsidian-600 flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <span id="modalPlayerPos" class="px-2.5 py-1 bg-eagreen text-black font-extrabold rounded-lg text-xs">ST</span>
-                    <div>
-                        <h3 id="modalPlayerName" class="font-extrabold text-base text-white">Lamine Yamal</h3>
-                        <span id="modalPlayerClub" class="text-xs text-gray-400">FC Barcelona • 19 лет</span>
-                    </div>
-                </div>
-                <button onclick="closePlayerModal()" class="text-gray-400 hover:text-white p-2 text-lg">
+    <!-- MOBILE BOTTOM NAVIGATION (Thumb-friendly) -->
+    <nav id="mobileBottomNav" class="md:hidden fixed bottom-0 left-0 right-0 z-50 glass-bottom-nav px-2 pt-1.5 flex items-center justify-around"></nav>
+
+    <!-- UNIVERSAL MODAL -->
+    <div id="modalBackdrop" class="modal-backdrop hidden" onclick="if(event.target===this) App.closeModal()">
+        <div class="modal-sheet">
+            <div class="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
+                <h3 id="modalTitle" class="font-display text-base font-bold text-white">Детали</h3>
+                <button onclick="App.closeModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-300">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-
-            <!-- Modal Content (Scrollable) -->
-            <div class="p-5 overflow-y-auto space-y-5 text-xs">
-                
-                <!-- OVR / POT / Market Value Summary -->
-                <div class="grid grid-cols-3 gap-3">
-                    <div class="bg-obsidian-800 p-3 rounded-xl border border-obsidian-600 text-center">
-                        <span class="text-[10px] text-gray-400 block">Текущий OVR</span>
-                        <span id="modalPlayerOvr" class="text-xl font-extrabold text-eagreen">90</span>
-                    </div>
-                    <div class="bg-obsidian-800 p-3 rounded-xl border border-obsidian-600 text-center">
-                        <span class="text-[10px] text-gray-400 block">Потенциал (POT)</span>
-                        <span id="modalPlayerPot" class="text-xl font-extrabold text-eacyan">95</span>
-                    </div>
-                    <div class="bg-obsidian-800 p-3 rounded-xl border border-obsidian-600 text-center">
-                        <span class="text-[10px] text-gray-400 block">Стоимость</span>
-                        <span id="modalPlayerPrice" class="text-sm font-extrabold text-amber-400 mt-1 block">€145M</span>
-                    </div>
-                </div>
-
-                <!-- CRITICAL FEATURE: VERSION RATING HISTORY TIMELINE -->
-                <div class="space-y-2 bg-obsidian-800/80 p-4 rounded-xl border border-obsidian-600">
-                    <h4 class="font-bold text-gray-200 flex items-center justify-between text-xs">
-                        <span><i class="fa-solid fa-clock-rotate-left text-eagreen mr-1"></i> Динамика OVR по версиям EA:</span>
-                        <span id="modalBadgeNote" class="text-[10px] text-amber-400 font-mono"></span>
-                    </h4>
-
-                    <!-- Timeline Bars -->
-                    <div class="grid grid-cols-5 gap-2 text-center pt-2" id="modalTimelineGrid">
-                        <!-- Dynamic columns for FIFA 23 -> FC 25 -> FC 26 -> FC 27 -> FC Mobile -->
-                    </div>
-                </div>
-
-                <!-- 5-SEASON CAREER GROWTH SIMULATOR -->
-                <div class="space-y-3 bg-obsidian-800/80 p-4 rounded-xl border border-obsidian-600">
-                    <h4 class="font-bold text-gray-200 flex items-center gap-1.5 text-xs">
-                        <i class="fa-solid fa-chart-line text-eacyan"></i> 5-Сезонный Симулятор Роста в Карьере:
-                    </h4>
-                    
-                    <div id="modalGrowthSimulatorBars" class="space-y-2">
-                        <!-- Injected JS -->
-                    </div>
-                </div>
-
-                <!-- Additional Info / Badge -->
-                <div class="flex items-center justify-between bg-obsidian-800 p-3 rounded-xl text-[11px] text-gray-300">
-                    <span>Нация: <b id="modalPlayerNation" class="text-white">Испания</b></span>
-                    <span>Категория: <b id="modalPlayerCat" class="text-eacyan">Вундеркинд</b></span>
-                </div>
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="p-4 bg-obsidian-800 border-t border-obsidian-600 flex justify-between items-center">
-                <button id="modalShortlistBtn" onclick="toggleShortlistModal()" class="bg-obsidian-700 hover:bg-amber-500/20 text-amber-400 border border-amber-500/40 px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5">
-                    <i class="fa-solid fa-star"></i> В Избранное
-                </button>
-                <button onclick="closePlayerModal()" class="bg-eagreen hover:bg-emerald-400 text-black px-5 py-2 rounded-xl text-xs font-extrabold transition-all">
-                    Закрыть
-                </button>
-            </div>
-
+            <div id="modalBody"></div>
         </div>
     </div>
 
-    <!-- SQUAD BUILDER PLAYER SELECTOR MODAL -->
-    <div id="squadPickerModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 hidden">
-        <div class="glass-panel w-full max-w-lg rounded-2xl border border-eaamber/40 overflow-hidden shadow-2xl flex flex-col max-h-[80vh]">
-            <div class="p-4 bg-obsidian-800 border-b border-obsidian-600 flex justify-between items-center">
-                <h3 class="font-extrabold text-sm text-eaamber">Выберите игрока для слота <span id="pickerSlotName" class="text-white"></span></h3>
-                <button onclick="closeSquadPicker()" class="text-gray-400 hover:text-white p-1">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-            <div class="p-3 bg-obsidian-800">
-                <input type="text" id="pickerSearchInput" oninput="renderSquadPickerList()" placeholder="Поиск по имени..." class="w-full bg-obsidian-900 border border-obsidian-600 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none">
-            </div>
-            <div id="squadPickerList" class="p-3 overflow-y-auto divide-y divide-obsidian-700/50 space-y-1">
-                <!-- Injected via JS -->
-            </div>
-        </div>
-    </div>
-
-
-    <!-- JAVASCRIPT APPLICATION CORE & HISTORICAL ENGINE -->
-    <script>
-        // Initialize Telegram Mini App SDK if present
-        if (window.Telegram && window.Telegram.WebApp) {
-            window.Telegram.WebApp.ready();
-            window.Telegram.WebApp.expand();
-        }
-
-        // Global State
-        let currentVersion = 'fc27'; // 'fc27', 'fc26', 'fc25', 'fifa23', 'fcmobile'
-        let currentCareerMode = 'manager'; // 'manager', 'player', 'ut'
-        let activeTab = 'tactics';
-        let selectedPosFilter = 'ALL';
-        let currentPage = 1;
-        const pageSize = 12;
-        let shortlist = JSON.parse(localStorage.getItem('fc_hub_shortlist') || '[]');
-        let activeModalPlayerId = null;
-        let currentPlatform = 'ps'; // 'ps' or 'xbox'
-        let activeSquadSlotIndex = null;
-        let activeSquadFormation = '433';
-
-        // Squad State (11 slots)
-        let squadPlayers = Array(11).fill(null);
-
-        // =========================================================================
-        // 1. HISTORICAL OVERRIDE DICTIONARY (70+ Famous stars & wonderkids)
-        // =========================================================================
-        const HISTORICAL_DATA = {
-            'p_yamal': {
-                fc27: { ovr: 90, pot: 95, age: 19, club: 'FC Barcelona' },
-                fc26: { ovr: 89, pot: 95, age: 18, club: 'FC Barcelona' },
-                fc25: { ovr: 81, pot: 94, age: 17, club: 'FC Barcelona' },
-                fifa23: { ovr: 76, pot: 92, age: 15, club: 'Barcelona B', note: 'Академия / Мод' },
-                fcmobile: { ovr: 107, pot: 112, age: 19, club: 'FC Barcelona' }
-            },
-            'p_mbappe': {
-                fc27: { ovr: 91, pot: 94, age: 27, club: 'Real Madrid' },
-                fc26: { ovr: 91, pot: 94, age: 26, club: 'Real Madrid' },
-                fc25: { ovr: 91, pot: 94, age: 25, club: 'Real Madrid' },
-                fifa23: { ovr: 91, pot: 95, age: 23, club: 'PSG' },
-                fcmobile: { ovr: 108, pot: 112, age: 27, club: 'Real Madrid' }
-            },
-            'p_haaland': {
-                fc27: { ovr: 91, pot: 94, age: 26, club: 'Man City' },
-                fc26: { ovr: 91, pot: 94, age: 25, club: 'Man City' },
-                fc25: { ovr: 91, pot: 94, age: 24, club: 'Man City' },
-                fifa23: { ovr: 88, pot: 94, age: 22, club: 'Man City' },
-                fcmobile: { ovr: 107, pot: 112, age: 26, club: 'Man City' }
-            },
-            'p_bellingham': {
-                fc27: { ovr: 90, pot: 94, age: 23, club: 'Real Madrid' },
-                fc26: { ovr: 90, pot: 94, age: 22, club: 'Real Madrid' },
-                fc25: { ovr: 90, pot: 94, age: 21, club: 'Real Madrid' },
-                fifa23: { ovr: 84, pot: 91, age: 19, club: 'Borussia Dortmund' },
-                fcmobile: { ovr: 106, pot: 111, age: 23, club: 'Real Madrid' }
-            },
-            'p_vini': {
-                fc27: { ovr: 90, pot: 93, age: 26, club: 'Real Madrid' },
-                fc26: { ovr: 90, pot: 93, age: 25, club: 'Real Madrid' },
-                fc25: { ovr: 90, pot: 94, age: 24, club: 'Real Madrid' },
-                fifa23: { ovr: 86, pot: 92, age: 22, club: 'Real Madrid' },
-                fcmobile: { ovr: 106, pot: 111, age: 26, club: 'Real Madrid' }
-            },
-            'p_rodri': {
-                fc27: { ovr: 90, pot: 90, age: 30, club: 'Man City' },
-                fc26: { ovr: 90, pot: 90, age: 29, club: 'Man City' },
-                fc25: { ovr: 91, pot: 91, age: 28, club: 'Man City' },
-                fifa23: { ovr: 87, pot: 89, age: 26, club: 'Man City' },
-                fcmobile: { ovr: 106, pot: 110, age: 30, club: 'Man City' }
-            },
-            'p_pedri': {
-                fc27: { ovr: 90, pot: 93, age: 23, club: 'FC Barcelona' },
-                fc26: { ovr: 89, pot: 93, age: 22, club: 'FC Barcelona' },
-                fc25: { ovr: 86, pot: 91, age: 21, club: 'FC Barcelona' },
-                fifa23: { ovr: 85, pot: 93, age: 19, club: 'FC Barcelona' },
-                fcmobile: { ovr: 105, pot: 110, age: 23, club: 'FC Barcelona' }
-            },
-            'p_salah': {
-                fc27: { ovr: 89, pot: 89, age: 34, club: 'Liverpool' },
-                fc26: { ovr: 91, pot: 91, age: 33, club: 'Liverpool' },
-                fc25: { ovr: 89, pot: 89, age: 32, club: 'Liverpool' },
-                fifa23: { ovr: 90, pot: 90, age: 30, club: 'Liverpool' },
-                fcmobile: { ovr: 106, pot: 110, age: 34, club: 'Liverpool' }
-            },
-            'p_raphinha': {
-                fc27: { ovr: 89, pot: 89, age: 29, club: 'FC Barcelona' },
-                fc26: { ovr: 89, pot: 89, age: 28, club: 'FC Barcelona' },
-                fc25: { ovr: 84, pot: 84, age: 27, club: 'FC Barcelona' },
-                fifa23: { ovr: 83, pot: 86, age: 25, club: 'FC Barcelona' },
-                fcmobile: { ovr: 105, pot: 109, age: 29, club: 'FC Barcelona' }
-            },
-            'p_palmer': {
-                fc27: { ovr: 88, pot: 91, age: 24, club: 'Chelsea' },
-                fc26: { ovr: 87, pot: 91, age: 23, club: 'Chelsea' },
-                fc25: { ovr: 85, pot: 90, age: 22, club: 'Chelsea' },
-                fifa23: { ovr: 67, pot: 84, age: 20, club: 'Man City' },
-                fcmobile: { ovr: 104, pot: 109, age: 24, club: 'Chelsea' }
-            },
-            'p_saka': {
-                fc27: { ovr: 89, pot: 91, age: 25, club: 'Arsenal' },
-                fc26: { ovr: 88, pot: 91, age: 24, club: 'Arsenal' },
-                fc25: { ovr: 87, pot: 90, age: 23, club: 'Arsenal' },
-                fifa23: { ovr: 82, pot: 89, age: 21, club: 'Arsenal' },
-                fcmobile: { ovr: 105, pot: 109, age: 25, club: 'Arsenal' }
-            },
-            'p_vitinha': {
-                fc27: { ovr: 89, pot: 91, age: 26, club: 'PSG' },
-                fc26: { ovr: 89, pot: 91, age: 25, club: 'PSG' },
-                fc25: { ovr: 85, pot: 89, age: 24, club: 'PSG' },
-                fifa23: { ovr: 79, pot: 86, age: 22, club: 'PSG' },
-                fcmobile: { ovr: 104, pot: 108, age: 26, club: 'PSG' }
-            },
-            'p_hakimi': {
-                fc27: { ovr: 89, pot: 89, age: 27, club: 'PSG' },
-                fc26: { ovr: 89, pot: 89, age: 26, club: 'PSG' },
-                fc25: { ovr: 84, pot: 86, age: 25, club: 'PSG' },
-                fifa23: { ovr: 84, pot: 87, age: 23, club: 'PSG' },
-                fcmobile: { ovr: 105, pot: 109, age: 27, club: 'PSG' }
-            },
-            'p_donnarumma': {
-                fc27: { ovr: 89, pot: 91, age: 27, club: 'Man City' },
-                fc26: { ovr: 89, pot: 91, age: 26, club: 'Man City' },
-                fc25: { ovr: 89, pot: 91, age: 25, club: 'PSG' },
-                fifa23: { ovr: 88, pot: 92, age: 23, club: 'PSG' },
-                fcmobile: { ovr: 105, pot: 109, age: 27, club: 'Man City' }
-            },
-            'p_messi': {
-                fc27: { ovr: 85, pot: 85, age: 39, club: 'Inter Miami' },
-                fc26: { ovr: 86, pot: 86, age: 38, club: 'Inter Miami' },
-                fc25: { ovr: 88, pot: 88, age: 37, club: 'Inter Miami' },
-                fifa23: { ovr: 91, pot: 91, age: 35, club: 'PSG' },
-                fcmobile: { ovr: 105, pot: 109, age: 39, club: 'Inter Miami' }
-            },
-            'p_ronaldo': {
-                fc27: { ovr: 83, pot: 83, age: 41, club: 'Al-Nassr' },
-                fc26: { ovr: 85, pot: 85, age: 40, club: 'Al-Nassr' },
-                fc25: { ovr: 86, pot: 86, age: 39, club: 'Al-Nassr' },
-                fifa23: { ovr: 90, pot: 90, age: 37, club: 'Man United' },
-                fcmobile: { ovr: 104, pot: 108, age: 41, club: 'Al-Nassr' }
-            },
-            'p_kdb': {
-                fc27: { ovr: 87, pot: 87, age: 35, club: 'Man City' },
-                fc26: { ovr: 88, pot: 88, age: 34, club: 'Man City' },
-                fc25: { ovr: 90, pot: 90, age: 33, club: 'Man City' },
-                fifa23: { ovr: 91, pot: 91, age: 31, club: 'Man City' },
-                fcmobile: { ovr: 104, pot: 108, age: 35, club: 'Man City' }
-            },
-            'p_kane': {
-                fc27: { ovr: 90, pot: 90, age: 33, club: 'Bayern Munich' },
-                fc26: { ovr: 90, pot: 90, age: 32, club: 'Bayern Munich' },
-                fc25: { ovr: 90, pot: 90, age: 31, club: 'Bayern Munich' },
-                fifa23: { ovr: 89, pot: 89, age: 29, club: 'Tottenham' },
-                fcmobile: { ovr: 105, pot: 109, age: 33, club: 'Bayern Munich' }
-            },
-            'p_lewandowski': {
-                fc27: { ovr: 86, pot: 86, age: 38, club: 'FC Barcelona' },
-                fc26: { ovr: 87, pot: 87, age: 37, club: 'FC Barcelona' },
-                fc25: { ovr: 88, pot: 88, age: 36, club: 'FC Barcelona' },
-                fifa23: { ovr: 91, pot: 91, age: 34, club: 'FC Barcelona' },
-                fcmobile: { ovr: 103, pot: 107, age: 38, club: 'FC Barcelona' }
-            },
-            'p_wirtz': {
-                fc27: { ovr: 89, pot: 93, age: 23, club: 'Bayer Leverkusen' },
-                fc26: { ovr: 89, pot: 93, age: 22, club: 'Bayer Leverkusen' },
-                fc25: { ovr: 88, pot: 92, age: 21, club: 'Bayer Leverkusen' },
-                fifa23: { ovr: 82, pot: 91, age: 19, club: 'Bayer Leverkusen' },
-                fcmobile: { ovr: 105, pot: 110, age: 23, club: 'Bayer Leverkusen' }
-            },
-            'p_musiala': {
-                fc27: { ovr: 89, pot: 93, age: 23, club: 'Bayern Munich' },
-                fc26: { ovr: 88, pot: 93, age: 22, club: 'Bayern Munich' },
-                fc25: { ovr: 87, pot: 93, age: 21, club: 'Bayern Munich' },
-                fifa23: { ovr: 81, pot: 90, age: 19, club: 'Bayern Munich' },
-                fcmobile: { ovr: 105, pot: 110, age: 23, club: 'Bayern Munich' }
-            },
-            'p_cubarsi': {
-                fc27: { ovr: 83, pot: 91, age: 19, club: 'FC Barcelona' },
-                fc26: { ovr: 81, pot: 90, age: 18, club: 'FC Barcelona' },
-                fc25: { ovr: 72, pot: 88, age: 17, club: 'FC Barcelona' },
-                fifa23: { ovr: 63, pot: 85, age: 15, club: 'Barcelona B', note: 'Академия' },
-                fcmobile: { ovr: 99, pot: 105, age: 19, club: 'FC Barcelona' }
-            },
-            'p_estevao': {
-                fc27: { ovr: 82, pot: 91, age: 19, club: 'Chelsea' },
-                fc26: { ovr: 78, pot: 90, age: 18, club: 'Chelsea' },
-                fc25: { ovr: 74, pot: 89, age: 17, club: 'Palmeiras' },
-                fifa23: { ovr: 64, pot: 86, age: 15, club: 'Palmeiras U20', note: 'Академия' },
-                fcmobile: { ovr: 98, pot: 105, age: 19, club: 'Chelsea' }
-            },
-            'p_endrick': {
-                fc27: { ovr: 82, pot: 91, age: 20, club: 'Real Madrid' },
-                fc26: { ovr: 80, pot: 91, age: 19, club: 'Real Madrid' },
-                fc25: { ovr: 77, pot: 91, age: 18, club: 'Real Madrid' },
-                fifa23: { ovr: 69, pot: 88, age: 16, club: 'Palmeiras' },
-                fcmobile: { ovr: 99, pot: 106, age: 20, club: 'Real Madrid' }
-            },
-            'p_mainoo': {
-                fc27: { ovr: 82, pot: 89, age: 21, club: 'Man United' },
-                fc26: { ovr: 80, pot: 88, age: 20, club: 'Man United' },
-                fc25: { ovr: 77, pot: 87, age: 19, club: 'Man United' },
-                fifa23: { ovr: 62, pot: 81, age: 17, club: 'Man United' },
-                fcmobile: { ovr: 98, pot: 104, age: 21, club: 'Man United' }
-            },
-            'p_foden': {
-                fc27: { ovr: 88, pot: 90, age: 26, club: 'Man City' },
-                fc26: { ovr: 88, pot: 90, age: 25, club: 'Man City' },
-                fc25: { ovr: 88, pot: 90, age: 24, club: 'Man City' },
-                fifa23: { ovr: 85, pot: 92, age: 22, club: 'Man City' },
-                fcmobile: { ovr: 104, pot: 108, age: 26, club: 'Man City' }
-            },
-            'p_valverde': {
-                fc27: { ovr: 89, pot: 90, age: 28, club: 'Real Madrid' },
-                fc26: { ovr: 88, pot: 90, age: 27, club: 'Real Madrid' },
-                fc25: { ovr: 88, pot: 90, age: 26, club: 'Real Madrid' },
-                fifa23: { ovr: 84, pot: 90, age: 24, club: 'Real Madrid' },
-                fcmobile: { ovr: 105, pot: 109, age: 28, club: 'Real Madrid' }
-            },
-            'p_caicedo': {
-                fc27: { ovr: 87, pot: 89, age: 24, club: 'Chelsea' },
-                fc26: { ovr: 87, pot: 89, age: 23, club: 'Chelsea' },
-                fc25: { ovr: 82, pot: 87, age: 22, club: 'Chelsea' },
-                fifa23: { ovr: 76, pot: 85, age: 20, club: 'Brighton' },
-                fcmobile: { ovr: 102, pot: 106, age: 24, club: 'Chelsea' }
-            },
-            'p_mokio': {
-                fc27: { ovr: 74, pot: 89, age: 18, club: 'Ajax' },
-                fc26: { ovr: 70, pot: 89, age: 17, club: 'Ajax' },
-                fc25: { ovr: 65, pot: 86, age: 16, club: 'Ajax' },
-                fifa23: { ovr: 58, pot: 82, age: 14, club: 'Gent U18', note: 'Академия' },
-                fcmobile: { ovr: 93, pot: 100, age: 18, club: 'Ajax' }
-            },
-            'p_hato': {
-                fc27: { ovr: 81, pot: 89, age: 20, club: 'Ajax' },
-                fc26: { ovr: 78, pot: 88, age: 19, club: 'Ajax' },
-                fc25: { ovr: 75, pot: 87, age: 18, club: 'Ajax' },
-                fifa23: { ovr: 63, pot: 83, age: 16, club: 'Ajax' },
-                fcmobile: { ovr: 96, pot: 103, age: 20, club: 'Ajax' }
-            },
-            'p_vuskovic': {
-                fc27: { ovr: 76, pot: 88, age: 19, club: 'Tottenham' },
-                fc26: { ovr: 72, pot: 87, age: 18, club: 'Tottenham' },
-                fc25: { ovr: 67, pot: 85, age: 17, club: 'Westerlo' },
-                fifa23: { ovr: 60, pot: 82, age: 15, club: 'Hajduk U19', note: 'Академия' },
-                fcmobile: { ovr: 94, pot: 101, age: 19, club: 'Tottenham' }
-            },
-            'p_restes': {
-                fc27: { ovr: 81, pot: 88, age: 21, club: 'Toulouse' },
-                fc26: { ovr: 79, pot: 87, age: 20, club: 'Toulouse' },
-                fc25: { ovr: 78, pot: 87, age: 19, club: 'Toulouse' },
-                fifa23: { ovr: 58, pot: 81, age: 17, club: 'Toulouse' },
-                fcmobile: { ovr: 96, pot: 102, age: 21, club: 'Toulouse' }
-            },
-            'p_zaire': {
-                fc27: { ovr: 84, pot: 90, age: 20, club: 'PSG' },
-                fc26: { ovr: 82, pot: 90, age: 19, club: 'PSG' },
-                fc25: { ovr: 80, pot: 89, age: 18, club: 'PSG' },
-                fifa23: { ovr: 66, pot: 84, age: 16, club: 'PSG' },
-                fcmobile: { ovr: 99, pot: 105, age: 20, club: 'PSG' }
-            },
-            'p_guler': {
-                fc27: { ovr: 83, pot: 90, age: 21, club: 'Real Madrid' },
-                fc26: { ovr: 81, pot: 89, age: 20, club: 'Real Madrid' },
-                fc25: { ovr: 78, pot: 88, age: 19, club: 'Real Madrid' },
-                fifa23: { ovr: 71, pot: 86, age: 17, club: 'Fenerbahçe' },
-                fcmobile: { ovr: 98, pot: 104, age: 21, club: 'Real Madrid' }
-            },
-            'p_saliba': {
-                fc27: { ovr: 89, pot: 91, age: 25, club: 'Arsenal' },
-                fc26: { ovr: 88, pot: 91, age: 24, club: 'Arsenal' },
-                fc25: { ovr: 87, pot: 90, age: 23, club: 'Arsenal' },
-                fifa23: { ovr: 80, pot: 87, age: 21, club: 'Arsenal' },
-                fcmobile: { ovr: 105, pot: 109, age: 25, club: 'Arsenal' }
-            },
-            'p_vandijk': {
-                fc27: { ovr: 88, pot: 88, age: 35, club: 'Liverpool' },
-                fc26: { ovr: 89, pot: 89, age: 34, club: 'Liverpool' },
-                fc25: { ovr: 89, pot: 89, age: 33, club: 'Liverpool' },
-                fifa23: { ovr: 90, pot: 90, age: 31, club: 'Liverpool' },
-                fcmobile: { ovr: 105, pot: 109, age: 35, club: 'Liverpool' }
-            },
-            'p_modric': {
-                fc27: { ovr: 83, pot: 83, age: 41, club: 'Real Madrid' },
-                fc26: { ovr: 84, pot: 84, age: 40, club: 'Real Madrid' },
-                fc25: { ovr: 86, pot: 86, age: 39, club: 'Real Madrid' },
-                fifa23: { ovr: 88, pot: 88, age: 37, club: 'Real Madrid' },
-                fcmobile: { ovr: 102, pot: 106, age: 41, club: 'Real Madrid' }
-            },
-            'p_neymar': {
-                fc27: { ovr: 84, pot: 84, age: 34, club: 'Santos' },
-                fc26: { ovr: 85, pot: 85, age: 33, club: 'Santos' },
-                fc25: { ovr: 87, pot: 87, age: 32, club: 'Al-Hilal' },
-                fifa23: { ovr: 89, pot: 89, age: 30, club: 'PSG' },
-                fcmobile: { ovr: 103, pot: 107, age: 34, club: 'Santos' }
-            },
-            'p_benzema': {
-                fc27: { ovr: 84, pot: 84, age: 38, club: 'Al-Ittihad' },
-                fc26: { ovr: 85, pot: 85, age: 37, club: 'Al-Ittihad' },
-                fc25: { ovr: 86, pot: 86, age: 36, club: 'Al-Ittihad' },
-                fifa23: { ovr: 91, pot: 91, age: 34, club: 'Real Madrid' },
-                fcmobile: { ovr: 102, pot: 106, age: 38, club: 'Al-Ittihad' }
-            }
-        };
-
-        // =========================================================================
-        // 2. BASE PLAYERS DATABASE (500+ Players)
-        // =========================================================================
-        const BASE_PLAYERS = [
-            // Explicit Stars with Overrides
-            { id: 'p_yamal', name: 'Lamine Yamal', pos: 'RW', secPos: ['RM', 'ST'], ovr: 90, pot: 95, age: 19, club: 'FC Barcelona', nation: 'Испания', cat: 'wonderkid' },
-            { id: 'p_mbappe', name: 'Kylian Mbappé', pos: 'ST', secPos: ['LW'], ovr: 91, pot: 94, age: 27, club: 'Real Madrid', nation: 'Франция', cat: 'star' },
-            { id: 'p_haaland', name: 'Erling Haaland', pos: 'ST', secPos: [], ovr: 91, pot: 94, age: 26, club: 'Man City', nation: 'Норвегия', cat: 'star' },
-            { id: 'p_bellingham', name: 'Jude Bellingham', pos: 'CAM', secPos: ['CM', 'ST'], ovr: 90, pot: 94, age: 23, club: 'Real Madrid', nation: 'Англия', cat: 'star' },
-            { id: 'p_vini', name: 'Vinícius Jr', pos: 'LW', secPos: ['ST'], ovr: 90, pot: 93, age: 26, club: 'Real Madrid', nation: 'Бразилия', cat: 'star' },
-            { id: 'p_rodri', name: 'Rodri', pos: 'CDM', secPos: ['CM'], ovr: 90, pot: 90, age: 30, club: 'Man City', nation: 'Испания', cat: 'star' },
-            { id: 'p_pedri', name: 'Pedri', pos: 'CM', secPos: ['CAM'], ovr: 90, pot: 93, age: 23, club: 'FC Barcelona', nation: 'Испания', cat: 'star' },
-            { id: 'p_salah', name: 'Mohamed Salah', pos: 'RW', secPos: ['ST'], ovr: 89, pot: 89, age: 34, club: 'Liverpool', nation: 'Египет', cat: 'star' },
-            { id: 'p_raphinha', name: 'Raphinha', pos: 'LW', secPos: ['RW', 'CAM'], ovr: 89, pot: 89, age: 29, club: 'FC Barcelona', nation: 'Бразилия', cat: 'star' },
-            { id: 'p_palmer', name: 'Cole Palmer', pos: 'CAM', secPos: ['RW'], ovr: 88, pot: 91, age: 24, club: 'Chelsea', nation: 'Англия', cat: 'wonderkid' },
-            { id: 'p_saka', name: 'Bukayo Saka', pos: 'RW', secPos: ['RM'], ovr: 89, pot: 91, age: 25, club: 'Arsenal', nation: 'Англия', cat: 'star' },
-            { id: 'p_vitinha', name: 'Vitinha', pos: 'CM', secPos: ['CDM'], ovr: 89, pot: 91, age: 26, club: 'PSG', nation: 'Португалия', cat: 'star' },
-            { id: 'p_hakimi', name: 'Achraf Hakimi', pos: 'RB', secPos: ['RWB'], ovr: 89, pot: 89, age: 27, club: 'PSG', nation: 'Марокко', cat: 'star' },
-            { id: 'p_donnarumma', name: 'Gianluigi Donnarumma', pos: 'GK', secPos: [], ovr: 89, pot: 91, age: 27, club: 'Man City', nation: 'Италия', cat: 'star' },
-            { id: 'p_messi', name: 'Lionel Messi', pos: 'RW', secPos: ['CAM', 'ST'], ovr: 85, pot: 85, age: 39, club: 'Inter Miami', nation: 'Аргентина', cat: 'star' },
-            { id: 'p_ronaldo', name: 'Cristiano Ronaldo', pos: 'ST', secPos: [], ovr: 83, pot: 83, age: 41, club: 'Al-Nassr', nation: 'Португалия', cat: 'star' },
-            { id: 'p_kdb', name: 'Kevin De Bruyne', pos: 'CM', secPos: ['CAM'], ovr: 87, pot: 87, age: 35, club: 'Man City', nation: 'Бельгия', cat: 'star' },
-            { id: 'p_kane', name: 'Harry Kane', pos: 'ST', secPos: [], ovr: 90, pot: 90, age: 33, club: 'Bayern Munich', nation: 'Англия', cat: 'star' },
-            { id: 'p_lewandowski', name: 'Robert Lewandowski', pos: 'ST', secPos: [], ovr: 86, pot: 86, age: 38, club: 'FC Barcelona', nation: 'Польша', cat: 'star' },
-            { id: 'p_wirtz', name: 'Florian Wirtz', pos: 'CAM', secPos: ['CM', 'LW'], ovr: 89, pot: 93, age: 23, club: 'Bayer Leverkusen', nation: 'Германия', cat: 'wonderkid' },
-            { id: 'p_musiala', name: 'Jamal Musiala', pos: 'CAM', secPos: ['LM', 'LW'], ovr: 89, pot: 93, age: 23, club: 'Bayern Munich', nation: 'Германия', cat: 'wonderkid' },
-            { id: 'p_cubarsi', name: 'Pau Cubarsí', pos: 'CB', secPos: [], ovr: 83, pot: 91, age: 19, club: 'FC Barcelona', nation: 'Испания', cat: 'wonderkid' },
-            { id: 'p_estevao', name: 'Estêvão Willian', pos: 'RW', secPos: ['CAM'], ovr: 82, pot: 91, age: 19, club: 'Chelsea', nation: 'Бразилия', cat: 'wonderkid' },
-            { id: 'p_endrick', name: 'Endrick', pos: 'ST', secPos: ['RW'], ovr: 82, pot: 91, age: 20, club: 'Real Madrid', nation: 'Бразилия', cat: 'wonderkid' },
-            { id: 'p_mainoo', name: 'Kobbie Mainoo', pos: 'CM', secPos: ['CDM'], ovr: 82, pot: 89, age: 21, club: 'Man United', nation: 'Англия', cat: 'wonderkid' },
-            { id: 'p_foden', name: 'Phil Foden', pos: 'RW', secPos: ['CAM', 'LW'], ovr: 88, pot: 90, age: 26, club: 'Man City', nation: 'Англия', cat: 'star' },
-            { id: 'p_valverde', name: 'Federico Valverde', pos: 'CM', secPos: ['RW', 'RB'], ovr: 89, pot: 90, age: 28, club: 'Real Madrid', nation: 'Уругвай', cat: 'star' },
-            { id: 'p_caicedo', name: 'Moisés Caicedo', pos: 'CDM', secPos: ['CM'], ovr: 87, pot: 89, age: 24, club: 'Chelsea', nation: 'Эквадор', cat: 'star' },
-            { id: 'p_mokio', name: 'Jorthy Mokio', pos: 'CB', secPos: ['LB'], ovr: 74, pot: 89, age: 18, club: 'Ajax', nation: 'Бельгия', cat: 'gem' },
-            { id: 'p_hato', name: 'Jorrel Hato', pos: 'CB', secPos: ['LB'], ovr: 81, pot: 89, age: 20, club: 'Ajax', nation: 'Нидерланды', cat: 'gem' },
-            { id: 'p_vuskovic', name: 'Luka Vušković', pos: 'CB', secPos: [], ovr: 76, pot: 88, age: 19, club: 'Tottenham', nation: 'Хорватия', cat: 'gem' },
-            { id: 'p_restes', name: 'Guillaume Restes', pos: 'GK', secPos: [], ovr: 81, pot: 88, age: 21, club: 'Toulouse', nation: 'Франция', cat: 'gem' },
-            { id: 'p_zaire', name: 'Warren Zaïre-Emery', pos: 'CM', secPos: ['CDM'], ovr: 84, pot: 90, age: 20, club: 'PSG', nation: 'Франция', cat: 'wonderkid' },
-            { id: 'p_guler', name: 'Arda Güler', pos: 'CAM', secPos: ['RW'], ovr: 83, pot: 90, age: 21, club: 'Real Madrid', nation: 'Турция', cat: 'wonderkid' },
-            { id: 'p_saliba', name: 'William Saliba', pos: 'CB', secPos: [], ovr: 89, pot: 91, age: 25, club: 'Arsenal', nation: 'Франция', cat: 'star' },
-            { id: 'p_vandijk', name: 'Virgil van Dijk', pos: 'CB', secPos: [], ovr: 88, pot: 88, age: 35, club: 'Liverpool', nation: 'Нидерланды', cat: 'star' },
-            { id: 'p_modric', name: 'Luka Modrić', pos: 'CM', secPos: [], ovr: 83, pot: 83, age: 41, club: 'Real Madrid', nation: 'Хорватия', cat: 'star' },
-            { id: 'p_neymar', name: 'Neymar Jr', pos: 'LW', secPos: ['CAM'], ovr: 84, pot: 84, age: 34, club: 'Santos', nation: 'Бразилия', cat: 'star' },
-            { id: 'p_benzema', name: 'Karim Benzema', pos: 'ST', secPos: [], ovr: 84, pot: 84, age: 38, club: 'Al-Ittihad', nation: 'Франция', cat: 'star' },
-
-            // Iconic Legends & Heroes
-            { id: 'p_pelé', name: 'Pelé', pos: 'CAM', secPos: ['CF', 'ST'], ovr: 98, pot: 98, age: 29, club: 'Icon Club', nation: 'Бразилия', cat: 'icon' },
-            { id: 'p_r9', name: 'Ronaldo Nazário', pos: 'ST', secPos: [], ovr: 96, pot: 96, age: 26, club: 'Icon Club', nation: 'Бразилия', cat: 'icon' },
-            { id: 'p_cruyff', name: 'Johan Cruyff', pos: 'CF', secPos: ['CAM', 'ST'], ovr: 95, pot: 95, age: 28, club: 'Icon Club', nation: 'Нидерланды', cat: 'icon' },
-            { id: 'p_zidane', name: 'Zinedine Zidane', pos: 'CAM', secPos: ['CM'], ovr: 96, pot: 96, age: 29, club: 'Icon Club', nation: 'Франция', cat: 'icon' },
-            { id: 'p_ronaldinho', name: 'Ronaldinho', pos: 'LW', secPos: ['CAM'], ovr: 94, pot: 94, age: 25, club: 'Icon Club', nation: 'Бразилия', cat: 'icon' },
-            { id: 'p_maldini', name: 'Paolo Maldini', pos: 'CB', secPos: ['LB'], ovr: 94, pot: 94, age: 30, club: 'Icon Club', nation: 'Италия', cat: 'icon' },
-            { id: 'p_yashin', name: 'Lev Yashin', pos: 'GK', secPos: [], ovr: 93, pot: 93, age: 31, club: 'Icon Club', nation: 'Россия', cat: 'icon' }
-        ];
-
-        // Generator to pad dataset to 500+ realistic players
-        const generateExtraPlayers = () => {
-            const firstNames = ['Alexander', 'Lucas', 'Mateo', 'Gabriel', 'Enzo', 'Julian', 'Marco', 'Noah', 'Leo', 'Hugo', 'Victor', 'Sandro', 'Milan', 'Dario', 'Kasper', 'Felipe', 'Iker', 'Carlos', 'Diego', 'Bruno'];
-            const lastNames = ['Silva', 'Garcia', 'Martinez', 'Santos', 'Müller', 'Schneider', 'Dupont', 'Moreau', 'De Jong', 'Van Dijk', 'Rossi', 'Ferrari', 'Kovac', 'Novak', 'Svensson', 'Lindberg', 'Alvarez', 'Torres', 'Nunes', 'Costa'];
-            const clubs = ['Arsenal', 'Chelsea', 'Liverpool', 'Man City', 'Man United', 'Tottenham', 'Real Madrid', 'FC Barcelona', 'Atletico Madrid', 'Bayern Munich', 'Borussia Dortmund', 'Leverkusen', 'PSG', 'Juventus', 'Inter Milan', 'AC Milan', 'Ajax', 'Benfica', 'Sporting CP', 'Porto'];
-            const nations = ['Англия', 'Испания', 'Франция', 'Германия', 'Италия', 'Бразилия', 'Аргентина', 'Нидерланды', 'Португалия', 'Бельгия'];
-            const positions = ['GK', 'CB', 'LB', 'RB', 'CDM', 'CM', 'CAM', 'LM', 'RM', 'LW', 'RW', 'ST'];
-
-            for (let i = 1; i <= 460; i++) {
-                const fn = firstNames[Math.floor(Math.random() * firstNames.length)];
-                const ln = lastNames[Math.floor(Math.random() * lastNames.length)];
-                const age = Math.floor(Math.random() * 18) + 17; // 17 to 34
-                const isYouth = age <= 21;
-                const baseOvr = isYouth ? Math.floor(Math.random() * 18) + 65 : Math.floor(Math.random() * 16) + 72; // 65-83 or 72-88
-                const potBonus = isYouth ? Math.floor(Math.random() * 12) + 6 : Math.floor(Math.random() * 3);
-                const pos = positions[Math.floor(Math.random() * positions.length)];
-                let cat = 'star';
-                if (isYouth && baseOvr + potBonus >= 87) cat = 'wonderkid';
-                else if (isYouth && potBonus >= 10) cat = 'gem';
-
-                BASE_PLAYERS.push({
-                    id: `p_gen_${i}`,
-                    name: `${fn} ${ln}`,
-                    pos: pos,
-                    secPos: [],
-                    ovr: baseOvr,
-                    pot: baseOvr + potBonus,
-                    age: age,
-                    club: clubs[Math.floor(Math.random() * clubs.length)],
-                    nation: nations[Math.floor(Math.random() * nations.length)],
-                    cat: cat
-                });
-            }
-        };
-        generateExtraPlayers();
-
-        // =========================================================================
-        // 3. VERSION-AWARE HISTORICAL ENGINE LOGIC
-        // =========================================================================
-        function calculateMarketValue(ovr, pot, age, version) {
-            if (version === 'fcmobile') {
-                const baseCoins = (ovr * ovr * 15000);
-                return `${Math.round(baseCoins / 1000000)}M монет`;
-            }
-            let baseVal = 0;
-            if (ovr < 70) baseVal = 1.5;
-            else if (ovr < 75) baseVal = 4.5;
-            else if (ovr < 80) baseVal = 12.0;
-            else if (ovr < 85) baseVal = 32.0;
-            else if (ovr < 90) baseVal = 75.0;
-            else baseVal = 135.0;
-
-            const potMultiplier = 1 + Math.max(0, (pot - ovr)) * 0.08;
-            let ageMultiplier = 1.0;
-            if (age < 21) ageMultiplier = 1.45;
-            else if (age < 26) ageMultiplier = 1.25;
-            else if (age > 32) ageMultiplier = 0.45;
-
-            const finalM = Math.round(baseVal * potMultiplier * ageMultiplier);
-            return `€${Math.max(1, finalM)}M`;
-        }
-
-        function getPlayerForVersion(player, version = currentVersion) {
-            // Check explicit historical override
-            if (HISTORICAL_DATA[player.id] && HISTORICAL_DATA[player.id][version]) {
-                const snap = HISTORICAL_DATA[player.id][version];
-                const price = calculateMarketValue(snap.ovr, snap.pot, snap.age, version);
-                return {
-                    ...player,
-                    ovr: snap.ovr,
-                    pot: snap.pot,
-                    age: snap.age,
-                    club: snap.club,
-                    price: price,
-                    note: snap.note || null,
-                    isUnavailable: false
-                };
-            }
-
-            // Icons/Heroes remain constant across console games
-            if (player.cat === 'icon') {
-                if (version === 'fcmobile') {
-                    return {
-                        ...player,
-                        ovr: Math.min(109, player.ovr + 13),
-                        pot: Math.min(114, player.pot + 13),
-                        price: calculateMarketValue(player.ovr + 13, player.pot + 13, player.age, version)
-                    };
-                }
-                return {
-                    ...player,
-                    price: calculateMarketValue(player.ovr, player.pot, player.age, version)
-                };
-            }
-
-            // Deterministic Historical Formula for Console versions
-            const yearsBackMap = { fc27: 0, fc26: 1, fc25: 2, fifa23: 4, fcmobile: 0 };
-            const yearsBack = yearsBackMap[version] || 0;
-
-            if (version === 'fcmobile') {
-                const mobileOvr = player.cat === 'wonderkid' ? Math.min(108, player.ovr + 16) : Math.min(108, player.ovr + 14);
-                const mobilePot = mobileOvr + 5;
-                return {
-                    ...player,
-                    ovr: mobileOvr,
-                    pot: mobilePot,
-                    price: calculateMarketValue(mobileOvr, mobilePot, player.age, version)
-                };
-            }
-
-            // Calculate historical age & OVR delta
-            let histAge = Math.max(15, player.age - yearsBack);
-            let histOvr = player.ovr;
-            let histPot = player.pot;
-            let note = null;
-
-            if (yearsBack > 0) {
-                if (player.age <= 22) { // Young players decrease going back
-                    histOvr = Math.max(56, player.ovr - Math.round(yearsBack * 3.1));
-                    if (histAge < 16) note = 'Академия / Мод';
-                } else if (player.age <= 27) { // Rising players
-                    histOvr = Math.max(65, player.ovr - Math.round(yearsBack * 1.5));
-                } else if (player.age <= 31) { // Peak players
-                    histOvr = player.ovr;
-                } else { // Veterans were STRONGER in FIFA 23
-                    histOvr = Math.min(91, player.ovr + Math.round(yearsBack * 1.2));
-                }
-            }
-
-            const price = calculateMarketValue(histOvr, histPot, histAge, version);
-            return {
-                ...player,
-                ovr: histOvr,
-                pot: histPot,
-                age: histAge,
-                price: price,
-                note: note
-            };
-        }
-
-        // Build 5-game timeline array for player modal chart
-        function getPlayerTimeline(player) {
-            const versions = ['fifa23', 'fc25', 'fc26', 'fc27', 'fcmobile'];
-            return versions.map(v => {
-                const snap = getPlayerForVersion(player, v);
-                return { version: v, ovr: snap.ovr, age: snap.age, club: snap.club };
-            });
-        }
-
-        // =========================================================================
-        // 4. UI TAB SWITCHER & GLOBAL CONTROLS
-        // =========================================================================
-        function switchTab(tabId) {
-            activeTab = tabId;
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-
-            // Tab Button styling
-            document.querySelectorAll('.nav-tab').forEach(btn => {
-                btn.className = 'nav-tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-transparent text-gray-400 hover:text-white hover:bg-obsidian-700';
-            });
-            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
-            if (activeBtn) {
-                activeBtn.className = `nav-tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-transparent tab-active-${tabId}`;
-            }
-
-            // Render content according to tab
-            if (tabId === 'transfers') renderTransfers();
-            else if (tabId === 'squad') renderSquadPitch();
-            else if (tabId === 'sbc') calculateSBC();
-            else if (tabId === 'duel') renderDuel();
-            else if (tabId === 'skills') renderSkills();
-            else if (tabId === 'tactics') renderTacticsPitch();
-        }
-
-        function setGameVersion(ver) {
-            currentVersion = ver;
-            document.querySelectorAll('.ver-btn').forEach(btn => {
-                if (btn.dataset.ver === ver) {
-                    btn.className = 'ver-btn px-2.5 py-1.5 rounded-lg font-bold transition-all bg-eagreen text-black shadow-md';
-                } else {
-                    btn.className = 'ver-btn px-2.5 py-1.5 rounded-lg font-bold transition-all text-gray-300 hover:text-white hover:bg-obsidian-700';
-                }
-            });
-
-            const labels = {
-                fc27: 'EA SPORTS FC 27',
-                fc26: 'EA SPORTS FC 26',
-                fc25: 'EA SPORTS FC 25',
-                fifa23: 'FIFA 23 (Legacy)',
-                fcmobile: 'FC Mobile (Ивент шкала)'
-            };
-            document.getElementById('versionBannerText').innerHTML = `Активный движок: <b>${labels[ver]}</b>. Все рейтинги, возраста, клубы и цены синхронизированы!`;
-            
-            // Re-render current active views with updated engine
-            renderTransfers();
-            renderSquadPitch();
-            renderDuel();
-        }
-
-        function setCareerMode(mode) {
-            currentCareerMode = mode;
-            const labels = { manager: 'Карьера тренера', player: 'Карьера игрока', ut: 'Ultimate Team' };
-            document.getElementById('activeModeBadge').textContent = `Режим: ${labels[mode]}`;
-        }
-
-        // =========================================================================
-        // 5. TAB 1: TACTICS & FC IQ ENGINE
-        // =========================================================================
-        const TACTIC_PRESETS = {
-            '4231_meta': {
-                title: '4-2-3-1 Киберспорт Мета',
-                formation: '4-2-3-1',
-                code: 'eafc-4231-meta-2027',
-                buildUp: 'Короткий пас & Быстрый перенос',
-                defensive: 'Высокий прессинг (70)',
-                tip: 'В EA FC 27 роль "Inside Forward+" для крайних хавов создает максимальную перегрузку флангов в фазе перехода.',
-                roles: [
-                    { pos: 'ST', role: 'Advanced Forward+', focus: 'Атака в глубину' },
-                    { pos: 'CAM', role: 'Playmaker+', focus: 'Свободный художник' },
-                    { pos: 'LM/RM', role: 'Inside Forward+', focus: 'Смещение в штрафную' },
-                    { pos: 'CDMs', role: 'Holding (Опора)+', focus: 'Страховка флангов' }
-                ],
-                positions: [
-                    { role: 'GK', top: '88%', left: '50%' },
-                    { role: 'LB', top: '72%', left: '15%' },
-                    { role: 'CB1', top: '76%', left: '38%' },
-                    { role: 'CB2', top: '76%', left: '62%' },
-                    { role: 'RB', top: '72%', left: '85%' },
-                    { role: 'CDM1', top: '56%', left: '35%' },
-                    { role: 'CDM2', top: '56%', left: '65%' },
-                    { role: 'CAM', top: '35%', left: '50%' },
-                    { role: 'LM', top: '32%', left: '18%' },
-                    { role: 'RM', top: '32%', left: '82%' },
-                    { role: 'ST', top: '14%', left: '50%' }
-                ]
-            },
-            '433_holding': {
-                title: '4-3-3 (4) Атака & Вингеры',
-                formation: '4-3-3',
-                code: 'eafc-433-attack-pro',
-                buildUp: 'Широкая атака',
-                defensive: 'Прессинг после потери (65)',
-                tip: 'Отлично подходит для игроков с быстрыми вингерами (Лямаль, Винисиус).',
-                roles: [
-                    { pos: 'LW/RW', role: 'Winger+', focus: 'Забегание за спину' },
-                    { pos: 'CAM', role: 'Shadow Striker+', focus: 'Врывания в зону ST' }
-                ],
-                positions: [
-                    { role: 'GK', top: '88%', left: '50%' },
-                    { role: 'LB', top: '72%', left: '15%' },
-                    { role: 'CB1', top: '76%', left: '38%' },
-                    { role: 'CB2', top: '76%', left: '62%' },
-                    { role: 'RB', top: '72%', left: '85%' },
-                    { role: 'CM1', top: '55%', left: '32%' },
-                    { role: 'CM2', top: '55%', left: '68%' },
-                    { role: 'CAM', top: '36%', left: '50%' },
-                    { role: 'LW', top: '20%', left: '18%' },
-                    { role: 'RW', top: '20%', left: '82%' },
-                    { role: 'ST', top: '14%', left: '50%' }
-                ]
-            }
-        };
-
-        function renderTacticsPitch(presetKey = '4231_meta') {
-            const data = TACTIC_PRESETS[presetKey] || TACTIC_PRESETS['4231_meta'];
-            document.getElementById('currentTacticTitle').textContent = data.title;
-            document.getElementById('currentTacticFormation').textContent = data.formation;
-            document.getElementById('tacticBuildUp').textContent = data.buildUp;
-            document.getElementById('tacticDefensive').textContent = data.defensive;
-            document.getElementById('tacticCodeInput').value = data.code;
-            document.getElementById('tacticProTip').textContent = data.tip;
-
-            // Roles breakdown
-            const rolesContainer = document.getElementById('tacticalRolesList');
-            rolesContainer.innerHTML = data.roles.map(r => `
-                <div class="flex justify-between items-center bg-obsidian-800 p-2 rounded-lg border border-obsidian-600">
-                    <span class="font-bold text-eagreen">${r.pos}: ${r.role}</span>
-                    <span class="text-[10px] text-gray-400 font-mono">${r.focus}</span>
-                </div>
-            `).join('');
-
-            // Tactical Tokens Pitch
-            const pitch = document.getElementById('tacticalPitchTokens');
-            pitch.innerHTML = data.positions.map(p => `
-                <div class="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center" style="top: ${p.top}; left: ${p.left};">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-eagreen to-emerald-400 text-black font-extrabold text-[10px] flex items-center justify-center shadow-lg border-2 border-black">
-                        ${p.role}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function loadTacticPreset(val) {
-            renderTacticsPitch(val);
-        }
-
-        function copyTacticCode() {
-            const input = document.getElementById('tacticCodeInput');
-            input.select();
-            document.execCommand('copy');
-            const fb = document.getElementById('copyFeedback');
-            fb.classList.remove('hidden');
-            setTimeout(() => fb.classList.add('hidden'), 2500);
-        }
-
-        // =========================================================================
-        // 6. TAB 2: TRANSFERS & 500+ PLAYER TABLE
-        // =========================================================================
-        function setPosFilter(pos) {
-            selectedPosFilter = pos;
-            document.querySelectorAll('.pos-filter-btn').forEach(btn => {
-                if (btn.dataset.pos === pos) {
-                    btn.className = 'pos-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-eacyan text-black';
-                } else {
-                    btn.className = 'pos-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:bg-obsidian-700';
-                }
-            });
-            currentPage = 1;
-            renderTransfers();
-        }
-
-        function filterShortlistOnly() {
-            selectedPosFilter = 'SHORTLIST';
-            currentPage = 1;
-            renderTransfers();
-        }
-
-        function renderTransfers() {
-            const query = document.getElementById('transferSearchInput')?.value.toLowerCase() || '';
-            const cat = document.getElementById('catFilterSelect')?.value || 'ALL';
-            const sort = document.getElementById('sortTransfersSelect')?.value || 'ovr_desc';
-
-            // Map base players with active version historical engine
-            let list = BASE_PLAYERS.map(p => getPlayerForVersion(p, currentVersion));
-
-            // Apply Filters
-            if (selectedPosFilter === 'SHORTLIST') {
-                list = list.filter(p => shortlist.includes(p.id));
-            } else if (selectedPosFilter !== 'ALL') {
-                if (selectedPosFilter === 'ATT') list = list.filter(p => ['ST', 'CF', 'RW', 'LW'].includes(p.pos));
-                else if (selectedPosFilter === 'MID') list = list.filter(p => ['CM', 'CAM', 'CDM', 'LM', 'RM'].includes(p.pos));
-                else if (selectedPosFilter === 'DEF') list = list.filter(p => ['CB', 'LB', 'RB', 'LWB', 'RWB'].includes(p.pos));
-                else if (selectedPosFilter === 'GK') list = list.filter(p => p.pos === 'GK');
-            }
-
-            if (cat !== 'ALL') {
-                list = list.filter(p => p.cat === cat);
-            }
-
-            if (query) {
-                list = list.filter(p => p.name.toLowerCase().includes(query) || p.club.toLowerCase().includes(query) || p.nation.toLowerCase().includes(query));
-            }
-
-            // Apply Sort
-            list.sort((a, b) => {
-                if (sort === 'ovr_desc') return b.ovr - a.ovr;
-                if (sort === 'pot_desc') return b.pot - a.pot;
-                if (sort === 'growth_desc') return (b.pot - b.ovr) - (a.pot - a.ovr);
-                if (sort === 'age_asc') return a.age - b.age;
-                if (sort === 'name_asc') return a.name.localeCompare(b.name);
-                return 0;
-            });
-
-            // Pagination
-            const total = list.length;
-            const totalPages = Math.ceil(total / pageSize) || 1;
-            if (currentPage > totalPages) currentPage = totalPages;
-            const start = (currentPage - 1) * pageSize;
-            const paginated = list.slice(start, start + pageSize);
-
-            // Render Table Body
-            const tbody = document.getElementById('transfersTableBody');
-            if (paginated.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" class="p-6 text-center text-gray-500">Игроки не найдены</td></tr>`;
-            } else {
-                tbody.innerHTML = paginated.map(p => {
-                    const isStarred = shortlist.includes(p.id);
-                    const growth = p.pot - p.ovr;
-                    return `
-                        <tr class="hover:bg-obsidian-800/80 transition-all cursor-pointer" onclick="openPlayerModal('${p.id}')">
-                            <td class="p-3 flex items-center gap-2">
-                                <span class="font-extrabold text-white text-xs">${p.name}</span>
-                                ${p.note ? `<span class="text-[9px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/30">${p.note}</span>` : ''}
-                            </td>
-                            <td class="p-3"><span class="px-2 py-0.5 bg-obsidian-700 text-eagreen font-mono rounded font-bold text-[10px]">${p.pos}</span></td>
-                            <td class="p-3 text-center"><span class="font-black text-sm text-eagreen">${p.ovr}</span></td>
-                            <td class="p-3 text-center"><span class="font-bold text-xs text-eacyan">${p.pot}</span></td>
-                            <td class="p-3 text-center"><span class="font-semibold text-xs text-amber-400">+${growth}</span></td>
-                            <td class="p-3 text-center text-gray-300 font-mono">${p.age}</td>
-                            <td class="p-3 text-gray-300 truncate max-w-[120px]">${p.club}</td>
-                            <td class="p-3 text-right font-extrabold text-amber-400">${p.price}</td>
-                            <td class="p-3 text-center" onclick="event.stopPropagation()">
-                                <button onclick="toggleShortlist('${p.id}')" class="p-1.5 hover:scale-125 transition-all text-xs ${isStarred ? 'text-amber-400' : 'text-gray-600 hover:text-amber-400'}">
-                                    <i class="fa-solid fa-star"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-            }
-
-            // Update Pagination UI
-            document.getElementById('transfersCountInfo').textContent = `Показано ${start + 1}-${Math.min(start + pageSize, total)} из ${total} игроков`;
-            const pagControls = document.getElementById('paginationControls');
-            pagControls.innerHTML = `
-                <button onclick="changePage(-1)" ${currentPage === 1 ? 'disabled' : ''} class="px-2.5 py-1 rounded bg-obsidian-700 text-gray-300 disabled:opacity-40">←</button>
-                <span class="px-2 font-mono text-eacyan font-bold">${currentPage} / ${totalPages}</span>
-                <button onclick="changePage(1)" ${currentPage === totalPages ? 'disabled' : ''} class="px-2.5 py-1 rounded bg-obsidian-700 text-gray-300 disabled:opacity-40">→</button>
-            `;
-
-            updateShortlistCountUI();
-        }
-
-        function changePage(delta) {
-            currentPage += delta;
-            renderTransfers();
-        }
-
-        function toggleShortlist(id) {
-            if (shortlist.includes(id)) shortlist = shortlist.filter(x => x !== id);
-            else shortlist.push(id);
-            localStorage.setItem('fc_hub_shortlist', JSON.stringify(shortlist));
-            renderTransfers();
-        }
-
-        function updateShortlistCountUI() {
-            document.getElementById('mobileShortlistCount').textContent = shortlist.length;
-            document.getElementById('desktopShortlistCount').textContent = shortlist.length;
-        }
-
-        // =========================================================================
-        // 7. PLAYER DETAIL MODAL & RATING HISTORY TIMELINE
-        // =========================================================================
-        function openPlayerModal(id) {
-            activeModalPlayerId = id;
-            const raw = BASE_PLAYERS.find(p => p.id === id);
-            if (!raw) return;
-
-            const p = getPlayerForVersion(raw, currentVersion);
-            document.getElementById('modalPlayerName').textContent = p.name;
-            document.getElementById('modalPlayerPos').textContent = p.pos;
-            document.getElementById('modalPlayerClub').textContent = `${p.club} • ${p.age} лет`;
-            document.getElementById('modalPlayerOvr').textContent = p.ovr;
-            document.getElementById('modalPlayerPot').textContent = p.pot;
-            document.getElementById('modalPlayerPrice').textContent = p.price;
-            document.getElementById('modalPlayerNation').textContent = p.nation;
-            document.getElementById('modalPlayerCat').textContent = p.cat.toUpperCase();
-            document.getElementById('modalBadgeNote').textContent = p.note ? `[${p.note}]` : '';
-
-            // Timeline across all 5 versions
-            const timeline = getPlayerTimeline(raw);
-            const timelineGrid = document.getElementById('modalTimelineGrid');
-            const vNames = { fifa23: 'FIFA 23', fc25: 'FC 25', fc26: 'FC 26', fc27: 'FC 27', fcmobile: 'FC Mobile' };
-            timelineGrid.innerHTML = timeline.map(t => `
-                <div class="bg-obsidian-900 p-2 rounded-lg border border-obsidian-600 ${t.version === currentVersion ? 'border-eagreen ring-1 ring-eagreen' : ''}">
-                    <span class="text-[9px] text-gray-400 block font-mono">${vNames[t.version]}</span>
-                    <span class="font-black text-sm text-eagreen block mt-0.5">${t.ovr}</span>
-                    <span class="text-[9px] text-gray-500 block truncate">${t.age} лет</span>
-                </div>
-            `).join('');
-
-            // 5-Season Simulator Bars
-            const growthContainer = document.getElementById('modalGrowthSimulatorBars');
-            const maxGrowth = p.pot - p.ovr;
-            let simHtml = '';
-            for (let season = 1; season <= 5; season++) {
-                const projectedOvr = Math.min(p.pot, p.ovr + Math.round((maxGrowth / 5) * season));
-                const progPct = Math.round((projectedOvr / p.pot) * 100);
-                simHtml += `
-                    <div class="space-y-1">
-                        <div class="flex justify-between text-[11px]">
-                            <span class="text-gray-400">Сезон ${season} (${p.age + season} лет):</span>
-                            <span class="font-bold text-eagreen">${projectedOvr} OVR</span>
-                        </div>
-                        <div class="w-full bg-obsidian-900 h-2 rounded-full overflow-hidden">
-                            <div class="bg-gradient-to-r from-eagreen to-eacyan h-full" style="width: ${progPct}%"></div>
-                        </div>
-                    </div>
-                `;
-            }
-            growthContainer.innerHTML = simHtml;
-
-            // Shortlist button state
-            const btn = document.getElementById('modalShortlistBtn');
-            if (shortlist.includes(id)) {
-                btn.className = 'bg-amber-500 text-black px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5';
-            } else {
-                btn.className = 'bg-obsidian-700 hover:bg-amber-500/20 text-amber-400 border border-amber-500/40 px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5';
-            }
-
-            document.getElementById('playerModal').classList.remove('hidden');
-        }
-
-        function closePlayerModal() {
-            document.getElementById('playerModal').classList.add('hidden');
-        }
-
-        function toggleShortlistModal() {
-            if (activeModalPlayerId) {
-                toggleShortlist(activeModalPlayerId);
-                openPlayerModal(activeModalPlayerId);
-            }
-        }
-
-        // =========================================================================
-        // 8. TAB 3: SQUAD BUILDER ENGINE
-        // =========================================================================
-        const FORMATIONS_LAYOUT = {
-            '433': [
-                { pos: 'GK', top: '88%', left: '50%' },
-                { pos: 'LB', top: '72%', left: '15%' },
-                { pos: 'CB', top: '76%', left: '38%' },
-                { pos: 'CB', top: '76%', left: '62%' },
-                { pos: 'RB', top: '72%', left: '85%' },
-                { pos: 'CM', top: '52%', left: '28%' },
-                { pos: 'CDM', top: '56%', left: '50%' },
-                { pos: 'CM', top: '52%', left: '72%' },
-                { pos: 'LW', top: '22%', left: '18%' },
-                { pos: 'ST', top: '15%', left: '50%' },
-                { pos: 'RW', top: '22%', left: '82%' }
-            ],
-            '4231': [
-                { pos: 'GK', top: '88%', left: '50%' },
-                { pos: 'LB', top: '72%', left: '15%' },
-                { pos: 'CB', top: '76%', left: '38%' },
-                { pos: 'CB', top: '76%', left: '62%' },
-                { pos: 'RB', top: '72%', left: '85%' },
-                { pos: 'CDM', top: '58%', left: '35%' },
-                { pos: 'CDM', top: '58%', left: '65%' },
-                { pos: 'CAM', top: '36%', left: '50%' },
-                { pos: 'LM', top: '34%', left: '18%' },
-                { pos: 'RM', top: '34%', left: '82%' },
-                { pos: 'ST', top: '15%', left: '50%' }
-            ]
-        };
-
-        function renderSquadPitch() {
-            const layout = FORMATIONS_LAYOUT[activeSquadFormation] || FORMATIONS_LAYOUT['433'];
-            const container = document.getElementById('squadPitchSlots');
-            
-            container.innerHTML = layout.map((slot, idx) => {
-                const playerRaw = squadPlayers[idx];
-                const player = playerRaw ? getPlayerForVersion(playerRaw, currentVersion) : null;
-
-                return `
-                    <div onclick="openSquadPicker(${idx}, '${slot.pos}')" class="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center cursor-pointer group" style="top: ${slot.top}; left: ${slot.left};">
-                        <div class="w-12 h-12 rounded-2xl ${player ? 'bg-gradient-to-tr from-amber-500 to-yellow-300 text-black' : 'bg-obsidian-800/90 text-gray-400 border border-amber-500/30'} flex flex-col items-center justify-center font-extrabold shadow-lg group-hover:scale-110 transition-all border-2 border-black">
-                            ${player ? `<span class="text-sm font-black">${player.ovr}</span><span class="text-[9px] truncate max-w-[40px]">${player.name.split(' ').pop()}</span>` : `<i class="fa-solid fa-plus text-xs"></i><span class="text-[9px] font-mono">${slot.pos}</span>`}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            updateSquadStats();
-        }
-
-        function changeSquadFormation(val) {
-            activeSquadFormation = val;
-            renderSquadPitch();
-        }
-
-        function clearSquad() {
-            squadPlayers = Array(11).fill(null);
-            renderSquadPitch();
-        }
-
-        function updateSquadStats() {
-            const active = squadPlayers.filter(Boolean).map(p => getPlayerForVersion(p, currentVersion));
-            if (active.length === 0) {
-                document.getElementById('squadAvgOvr').textContent = '0';
-                document.getElementById('squadAvgAge').textContent = '0.0 лет';
-                document.getElementById('squadTotalValue').textContent = '€0M';
-                document.getElementById('squadTopPlayersList').innerHTML = `<span class="text-gray-500 italic">Состав пуст</span>`;
-                return;
-            }
-
-            const avgOvr = Math.round(active.reduce((acc, p) => acc + p.ovr, 0) / active.length);
-            const avgAge = (active.reduce((acc, p) => acc + p.age, 0) / active.length).toFixed(1);
-
-            document.getElementById('squadAvgOvr').textContent = avgOvr;
-            document.getElementById('squadAvgAge').textContent = `${avgAge} лет`;
-            document.getElementById('squadTopPlayersList').innerHTML = active.map(p => `
-                <div class="flex justify-between text-xs bg-obsidian-800 p-2 rounded border border-obsidian-600">
-                    <span class="font-bold text-white">${p.name}</span>
-                    <span class="font-bold text-eaamber">${p.ovr} OVR</span>
-                </div>
-            `).join('');
-        }
-
-        function openSquadPicker(slotIdx, posName) {
-            activeSquadSlotIndex = slotIdx;
-            document.getElementById('pickerSlotName').textContent = posName;
-            document.getElementById('squadPickerModal').classList.remove('hidden');
-            renderSquadPickerList();
-        }
-
-        function closeSquadPicker() {
-            document.getElementById('squadPickerModal').classList.add('hidden');
-        }
-
-        function renderSquadPickerList() {
-            const query = document.getElementById('pickerSearchInput')?.value.toLowerCase() || '';
-            let list = BASE_PLAYERS.map(p => getPlayerForVersion(p, currentVersion));
-            if (query) list = list.filter(p => p.name.toLowerCase().includes(query));
-            list.sort((a, b) => b.ovr - a.ovr);
-
-            const container = document.getElementById('squadPickerList');
-            container.innerHTML = list.slice(0, 30).map(p => `
-                <div onclick="selectSquadPlayer('${p.id}')" class="p-2 hover:bg-obsidian-700 rounded-lg flex items-center justify-between cursor-pointer">
-                    <div>
-                        <span class="font-bold text-xs text-white block">${p.name}</span>
-                        <span class="text-[10px] text-gray-400">${p.pos} • ${p.club}</span>
-                    </div>
-                    <span class="font-extrabold text-sm text-eaamber">${p.ovr}</span>
-                </div>
-            `).join('');
-        }
-
-        function selectSquadPlayer(id) {
-            const raw = BASE_PLAYERS.find(p => p.id === id);
-            if (raw && activeSquadSlotIndex !== null) {
-                squadPlayers[activeSquadSlotIndex] = raw;
-                closeSquadPicker();
-                renderSquadPitch();
-            }
-        }
-
-        // =========================================================================
-        // 9. TAB 4: SBC CALCULATOR ENGINE
-        // =========================================================================
-        const SBC_SOLUTIONS = {
-            '83': { combo: '2x 84 OVR, 9x 82 OVR', cost: '~12,000 монет' },
-            '84': { combo: '2x 85 OVR, 3x 84 OVR, 6x 83 OVR', cost: '~24,000 монет' },
-            '85': { combo: '2x 87 OVR, 3x 85 OVR, 6x 84 OVR', cost: '~45,000 монет' },
-            '86': { combo: '1x 88 OVR, 3x 87 OVR, 7x 85 OVR', cost: '~78,000 монет' },
-            '87': { combo: '2x 89 OVR, 3x 88 OVR, 6x 86 OVR', cost: '~130,000 монет' }
-        };
-
-        function calculateSBC() {
-            const target = document.getElementById('sbcTargetRatingSelect')?.value || '85';
-            const sol = SBC_SOLUTIONS[target] || SBC_SOLUTIONS['85'];
-            
-            document.getElementById('sbcCombinationResult').innerHTML = `
-                <div class="bg-obsidian-800 p-3 rounded-xl border border-obsidian-600 text-xs space-y-1">
-                    <span class="text-gray-400 block">Необходимые карты:</span>
-                    <span class="font-extrabold text-white text-sm block text-yellow-400">${sol.combo}</span>
-                </div>
-            `;
-            document.getElementById('sbcEstimatedCost').textContent = sol.cost;
-
-            // Generate 11 input boxes if empty
-            const grid = document.getElementById('sbcInputsGrid');
-            if (grid && grid.children.length === 0) {
-                grid.innerHTML = Array(11).fill(0).map((_, i) => `
-                    <input type="number" min="75" max="99" value="${84 + (i % 2)}" class="sbc-val-input bg-obsidian-800 border border-obsidian-600 text-center rounded-lg p-2 font-bold text-yellow-400 focus:outline-none focus:border-yellow-500">
-                `).join('');
-            }
-        }
-
-        function calcCustomSBC() {
-            const inputs = document.querySelectorAll('.sbc-val-input');
-            let sum = 0;
-            inputs.forEach(inp => sum += parseInt(inp.value) || 0);
-            const avg = Math.round(sum / 11);
-            document.getElementById('customSbcResultOvr').innerHTML = `Итоговый OVR: <b class="text-yellow-400 text-sm">${avg}</b>`;
-        }
-
-        // =========================================================================
-        // 10. TAB 5: 1v1 DUEL ENGINE
-        // =========================================================================
-        function renderDuel() {
-            const list = BASE_PLAYERS.map(p => getPlayerForVersion(p, currentVersion));
-            const p1Sel = document.getElementById('duelP1Select');
-            const p2Sel = document.getElementById('duelP2Select');
-
-            if (p1Sel.children.length === 0) {
-                p1Sel.innerHTML = list.map(p => `<option value="${p.id}">${p.name} (${p.ovr})</option>`).join('');
-                p2Sel.innerHTML = list.map((p, i) => `<option value="${p.id}" ${i === 1 ? 'selected' : ''}>${p.name} (${p.ovr})</option>`).join('');
-            }
-
-            const p1 = getPlayerForVersion(BASE_PLAYERS.find(p => p.id === p1Sel.value) || BASE_PLAYERS[0], currentVersion);
-            const p2 = getPlayerForVersion(BASE_PLAYERS.find(p => p.id === p2Sel.value) || BASE_PLAYERS[1], currentVersion);
-
-            document.getElementById('duelP1Card').innerHTML = `
-                <div class="flex justify-between items-center">
-                    <span class="font-extrabold text-base text-white">${p1.name}</span>
-                    <span class="font-black text-xl text-red-400">${p1.ovr} OVR</span>
-                </div>
-                <div class="text-xs text-gray-400">Позиция: ${p1.pos} | Возраст: ${p1.age} | Клуб: ${p1.club}</div>
-            `;
-
-            document.getElementById('duelP2Card').innerHTML = `
-                <div class="flex justify-between items-center">
-                    <span class="font-extrabold text-base text-white">${p2.name}</span>
-                    <span class="font-black text-xl text-blue-400">${p2.ovr} OVR</span>
-                </div>
-                <div class="text-xs text-gray-400">Позиция: ${p2.pos} | Возраст: ${p2.age} | Клуб: ${p2.club}</div>
-            `;
-
-            // Bars
-            const stats = [
-                { name: 'Общий Рейтинг (OVR)', val1: p1.ovr, val2: p2.ovr },
-                { name: 'Потенциал (POT)', val1: p1.pot, val2: p2.pot },
-                { name: 'Молодость / Перспектива', val1: 40 - p1.age, val2: 40 - p2.age }
-            ];
-
-            document.getElementById('duelComparisonBars').innerHTML = stats.map(s => `
-                <div class="space-y-1">
-                    <div class="flex justify-between font-bold">
-                        <span class="text-red-400">${s.val1}</span>
-                        <span class="text-gray-300 text-[11px]">${s.name}</span>
-                        <span class="text-blue-400">${s.val2}</span>
-                    </div>
-                    <div class="flex h-2 bg-obsidian-800 rounded-full overflow-hidden">
-                        <div class="bg-red-500 h-full" style="width: ${(s.val1 / (s.val1 + s.val2)) * 100}%"></div>
-                        <div class="bg-blue-500 h-full" style="width: ${(s.val2 / (s.val1 + s.val2)) * 100}%"></div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // =========================================================================
-        // 11. TAB 6: CHALLENGES ROULETTE
-        // =========================================================================
-        const ROULETTE_CLUBS = ['Реал Мадрид', 'Барселона', 'Манчестер Юнайтед', 'Аякс', 'Атлетик Бильбао', 'Боруссия Д', 'ПСЖ', 'Ювентус'];
-        const ROULETTE_CONDITIONS = ['Без трансферов (только академия)', 'Макс. зарплата €50k/нед', 'Продавать звезд по первому офферу', 'Только игроки своей страны'];
-        const ROULETTE_GOALS = ['Выиграть Требл за 3 года', 'Поднять академика до 90+ OVR', 'Не проиграть ни разу дома', 'Завоевать ЛЧ без легионеров'];
-
-        function spinRoulette() {
-            const club = ROULETTE_CLUBS[Math.floor(Math.random() * ROULETTE_CLUBS.length)];
-            const cond = ROULETTE_CONDITIONS[Math.floor(Math.random() * ROULETTE_CONDITIONS.length)];
-            const goal = ROULETTE_GOALS[Math.floor(Math.random() * ROULETTE_GOALS.length)];
-
-            document.getElementById('reelClub').textContent = club;
-            document.getElementById('reelCondition').textContent = cond;
-            document.getElementById('reelGoal').textContent = goal;
-        }
-
-        // =========================================================================
-        // 12. TAB 7: SKILLS & MECHANICS ENGINE (24+)
-        // =========================================================================
-        const SKILLS_DATABASE = [
-            { name: 'El Elastico', stars: 5, ps: 'R1 + R3 (Право → Лево)', xbox: 'RB + RS (Right → Left)' },
-            { name: 'McGeady Spin', stars: 5, ps: 'R3 (Вперед → Вбок)', xbox: 'RS (Forward → Side)' },
-            { name: 'Rainbow Flick', stars: 4, ps: 'R3 (Назад → Вперед ×2)', xbox: 'RS (Back → Forward ×2)' },
-            { name: 'Ball Roll', stars: 2, ps: 'Удерживать R3 Вбок', xbox: 'Hold RS Side' },
-            { name: 'Fake Shot Stop', stars: 1, ps: 'Square + X (без L3)', xbox: 'X + A (no LS)' }
-        ];
-
-        function renderSkills(filterStars = 'ALL') {
-            const grid = document.getElementById('skillsGrid');
-            grid.innerHTML = SKILLS_DATABASE.map(s => `
-                <div class="glass-panel p-4 rounded-xl border border-obsidian-600 space-y-2">
-                    <div class="flex justify-between items-center">
-                        <span class="font-extrabold text-sm text-white">${s.name}</span>
-                        <span class="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded font-bold">${'★'.repeat(s.stars)}</span>
-                    </div>
-                    <div class="bg-obsidian-800 p-2.5 rounded-lg border border-obsidian-600 text-xs font-mono text-gray-300">
-                        ${currentPlatform === 'ps' ? s.ps : s.xbox}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function setPlatform(plat) {
-            currentPlatform = plat;
-            document.getElementById('btnPlatformPS').className = plat === 'ps' ? 'px-3 py-1.5 rounded-lg font-bold bg-orange-500 text-black' : 'px-3 py-1.5 rounded-lg font-bold text-gray-400 hover:text-white';
-            document.getElementById('btnPlatformXbox').className = plat === 'xbox' ? 'px-3 py-1.5 rounded-lg font-bold bg-orange-500 text-black' : 'px-3 py-1.5 rounded-lg font-bold text-gray-400 hover:text-white';
-            renderSkills();
-        }
-
-        function filterSkills(cat) {
-            renderSkills();
-        }
-
-        // =========================================================================
-        // 13. TAB 8: TRAINING CALC
-        // =========================================================================
-        function updateTrainingCalc() {
-            const sharpness = parseInt(document.getElementById('sliderSharpness').value);
-            const fitness = parseInt(document.getElementById('sliderFitness').value);
-            document.getElementById('valSharpness').textContent = `${sharpness}%`;
-            document.getElementById('valFitness').textContent = `${fitness}%`;
-
-            const boost = sharpness > 80 ? '+3 к OVR' : (sharpness > 50 ? '+1 к OVR' : '-2 к OVR');
-            document.getElementById('trainingBoostResult').textContent = `Бонус в матче: ${boost} (Тонус: ${sharpness}%, Энергия: ${fitness}%)`;
-        }
-
-        // =========================================================================
-        // 14. TAB 9: AI SCANNER & DEMO FALLBACK
-        // =========================================================================
-        function handleAiImageUpload(evt) {
-            const file = evt.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = document.getElementById('aiImagePreview');
-                img.src = e.target.result;
-                img.classList.remove('hidden');
-                document.getElementById('aiUploadPlaceholder').classList.add('hidden');
-                triggerDemoAiAnalysis();
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function triggerDemoAiAnalysis() {
-            document.getElementById('aiScanEffect').classList.remove('hidden');
-            document.getElementById('aiStatusBadge').textContent = 'Сканирование...';
-
-            setTimeout(() => {
-                document.getElementById('aiScanEffect').classList.add('hidden');
-                document.getElementById('aiStatusBadge').textContent = 'Анализ завершен ✓';
-                document.getElementById('aiOutputContent').innerHTML = `
-                    <div class="space-y-2 text-white">
-                        <span class="font-bold text-eagreen block text-sm">💡 Анализ состава от Тренера ИИ:</span>
-                        <p>1. <b>Фланги:</b> Отличная скорость в атаке. Лямаль и Винисиус обеспечивают 90+ Pace.</p>
-                        <p>2. <b>Опорная зона:</b> Рекомендуется заменить текущего CDM на более физически мощного Родри или Кайседо.</p>
-                        <p>3. <b>Сыгранность:</b> Схема 4-2-3-1 идеально сбалансирована под метовую тактику FC 27.</p>
-                    </div>
-                `;
-            }, 2000);
-        }
-
-        // Initialize App on DOM Ready
-        window.onload = function() {
-            renderTacticsPitch();
-            renderTransfers();
-            renderSquadPitch();
-            updateShortlistCountUI();
-        };
-    </script>
+    <!-- SCRIPTS -->
+    <script src="js/data.js"></script>
+    <script src="js/manager.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
